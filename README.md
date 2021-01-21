@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/hrapovd1/final_project.svg?branch=master)](https://travis-ci.com/hrapovd1/final_project)
 # Проектная работа
 ## Выбранная тема "System monitoring" ("Системный мониторинг")
 
