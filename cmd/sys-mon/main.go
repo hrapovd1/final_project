@@ -7,9 +7,8 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
-	sysmon "github.com/hrapovd1/final_project/pkg/sysmon"
+	sysmon "github.com/hrapovd1/final_project/pkg/sys-mon"
 )
 
 func main() {
@@ -33,10 +32,12 @@ func main() {
 
 	// Create new sys-mon
 	monInstance := sysmon.NewSysmon(*dataBuff, *answPeriod, *port)
-	err := monInst.Run(stdoutLog, sysSigCh)
+	err := monInstance.Run(*stdoutLog, sysSigCh)
 	if err != nil {
 		stdoutLog.Printf("ERROR: %v", err)
 	}
+
+	stdoutLog.Println("wait for init service...")
 
 	<-sysSigCh
 	stdoutLog.Println("Got stop signal")
