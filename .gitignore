@@ -8,6 +8,7 @@
 go-cp
 go-envdir
 go-telnet
+sys-mon
 
 # Test binary, build with `go test -c`
 *.test
