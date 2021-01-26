@@ -1,0 +1,77 @@
+syntax = "proto3";
+package grpc;
+
+option go_package = "github.com/hrapovd1/final_project/pkg/grpc";
+
+message Request {
+	bool sent = 1;
+}
+
+message NetProtoTalker {
+	string proto = 1;
+	uint32 bytes = 2;
+	uint32 rate = 3;
+}
+
+message NetRateTalker {
+	string proto = 1;
+	uint32 sport = 2;
+	uint32 dport = 3;
+	uint32 bps = 4;
+}
+
+message Fs {
+	string name = 1;
+	uint32 used = 2;
+	uint32 iused = 3;
+}
+
+message Listen {
+	string cmd = 1;
+	string user = 2;
+	uint32 pid = 3;
+	string proto = 4;
+	uint32 port = 5;
+}
+
+message All {
+	message LoadAverage {
+		uint32 load = 1;
+	}
+	
+	message Cpu {
+		uint32 sys = 1;
+		uint32 user = 2;
+		uint32 idle = 3;
+	}
+	
+	message Disk {
+		uint32 tps = 1;
+		uint32 kbps = 2;
+	}
+	
+	message Allfs {
+		repeated Fs partition = 1;
+	}
+	
+	message TcpConnections {
+		uint32 count = 1;
+	}
+	
+	message Sockets {
+		repeated Listen listner = 1;
+	}
+	
+	message NetProto {
+		repeated NetProtoTalker talker = 1;
+	}
+	
+	message NetRate {
+		repeated NetRateTalker talker = 1;
+	}
+}
+
+service Stat {
+	rpc GetAll (Request) returns (stream All){
+	}
+}
