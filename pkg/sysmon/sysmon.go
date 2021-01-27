@@ -2,8 +2,12 @@ package sysmon
 
 import (
 	"log"
+	"net"
 	"os"
 	"time"
+
+	smgrpc "github.com/hrapovd1/final_project/pkg/smgrpc"
+	grpc "google.golang.org/grpc"
 )
 
 type Sysmon interface {
@@ -52,84 +56,13 @@ func NewSysmon(dataBuff, answPeriod, port uint) Sysmon {
 }
 
 func (mst *monState) Run(logger log.Logger, sysCh <-chan os.Signal) error {
-	go func(sysCh <-chan os.Signal) {
-		select {
-		case <-sysCh:
-			return
-		default:
-			for {
-				time.Sleep(time.Duration(smState.dataBuff) * time.Second)
-				logger.Println("run load data getter")
-			}
-		}
-	}(sysCh)
-	go func(sysCh <-chan os.Signal) {
-		select {
-		case <-sysCh:
-			return
-		default:
-			for {
-				time.Sleep(time.Duration(smState.dataBuff) * time.Second)
-				logger.Println("run cpu data getter")
-			}
-		}
-	}(sysCh)
-	go func(sysCh <-chan os.Signal) {
-		select {
-		case <-sysCh:
-			return
-		default:
-			for {
-				time.Sleep(time.Duration(smState.dataBuff) * time.Second)
-				logger.Println("run disk data getter")
-			}
-		}
-	}(sysCh)
-	go func(sysCh <-chan os.Signal) {
-		select {
-		case <-sysCh:
-			return
-		default:
-			for {
-				time.Sleep(time.Duration(smState.dataBuff) * time.Second)
-				logger.Println("run fs data getter")
-			}
-		}
-	}(sysCh)
-	go func(sysCh <-chan os.Signal) {
-		select {
-		case <-sysCh:
-			return
-		default:
-			for {
-				time.Sleep(time.Duration(smState.dataBuff) * time.Second)
-				logger.Println("run netstat data getter")
-			}
-		}
-	}(sysCh)
-	go func(sysCh <-chan os.Signal) {
-		select {
-		case <-sysCh:
-			return
-		default:
-			for {
-				time.Sleep(time.Duration(smState.dataBuff) * time.Second)
-				logger.Println("run data aggregator")
-			}
-		}
-	}(sysCh)
-	go func(sysCh <-chan os.Signal) {
-		select {
-		case <-sysCh:
-			return
-		default:
-			logger.Printf("open %v port to listen...", smState.port)
-			for {
-				time.Sleep(time.Duration(smState.answPeriod) * time.Second)
-				logger.Println("wait next answer...")
-			}
-		}
-	}(sysCh)
+	srvSock := "0.0.0.0" + ":" + string(smState.port)
+	lsn, err := net.Listen("tcp", srvSock)
+	if err != nil {
+		logger.Fatal(err)
+	}
+
+	server := grpc.NewServer()
 
 	return nil
 }
