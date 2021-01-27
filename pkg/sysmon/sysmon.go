@@ -63,6 +63,8 @@ func (mst *monState) Run(logger log.Logger, sysCh <-chan os.Signal) error {
 	}
 
 	server := grpc.NewServer()
+	var statServer smgrpc.UnimplementedStatServer
+	smgrpc.RegisterStatServer(server, statServer)
 
 	return nil
 }
