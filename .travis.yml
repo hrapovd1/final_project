@@ -21,6 +21,7 @@ env:
     - BRANCH="${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}"
 
 before_install:
+  - travis_terminate 0
   - echo "current branch is ${BRANCH}"
   - if [ "${BRANCH}" == "master" ]; then travis_terminate 0; fi
   - ls ${BRANCH} && cd ${BRANCH}
