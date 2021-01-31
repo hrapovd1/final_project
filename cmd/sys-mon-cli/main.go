@@ -20,6 +20,18 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not get answer: %v", err)
 	}
+	header, err := resp.Header()
+	if err != nil {
+		log.Printf("when read header, got: %v", err)
+	}
+	if a, ok := header["application"]; ok {
+		for _, v := range a {
+			log.Printf("host: %v\n", v)
+		}
+	} else {
+		log.Println("wait application field but doesn't get")
+	}
+
 	for {
 		msg, err := resp.Recv()
 		if err != nil {

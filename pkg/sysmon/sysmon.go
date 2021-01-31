@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
 	"strconv"
 
 	smgrpc "github.com/hrapovd1/final_project/pkg/smgrpc"
@@ -17,16 +16,6 @@ type statServer struct {
 }
 
 func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer) error {
-	//return status.Errorf(codes.Unimplemented, "method GetAll not implemented")
-	/*
-		fmt.Printf("--- ServerStreamingEcho ---\n")
-		// Create trailer in defer to record function return time.
-		defer func() {
-			trailer := metadata.Pairs("timestamp", time.Now().Format(timestampFormat))
-			stream.SetTrailer(trailer)
-		}()
-	*/
-	// Create and send header.
 	header := metadata.New(map[string]string{"application": "System monitoring"})
 	out.SendHeader(header)
 
@@ -40,7 +29,7 @@ func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer
 }
 
 type Sysmon interface {
-	Run(logger log.Logger, sysCh <-chan os.Signal) error
+	Run(doneCh <-chan interface{}, logger log.Logger) error
 }
 
 type sysmonState struct {
@@ -84,14 +73,12 @@ func NewSysmon(dataBuff, answPeriod, port uint) Sysmon {
 	}
 }
 
-func (mst *monState) Run(logger log.Logger, sysCh <-chan os.Signal) error {
+func (mst *monState) Run(doneCh <-chan interface{}, logger log.Logger) error {
 	srvSock := ":" + strconv.Itoa(int(smState.port))
 	lsn, err := net.Listen("tcp", srvSock)
 	if err != nil {
 		logger.Fatal(err)
 	}
-
-	defer lsn.Close()
 
 	server := grpc.NewServer()
 	smgrpc.RegisterStatServer(server, &statServer{})
@@ -105,8 +92,10 @@ func (mst *monState) Run(logger log.Logger, sysCh <-chan os.Signal) error {
 		}
 	}()
 
-	<-sysCh
-
-	server.Stop()
+	go func() {
+		<-doneCh
+		server.Stop()
+		defer lsn.Close()
+	}()
 	return nil
 }

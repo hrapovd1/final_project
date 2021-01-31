@@ -32,14 +32,20 @@ func main() {
 	// Setup logger to stdout
 	stdoutLog := log.New(os.Stdout, "", log.LstdFlags)
 
+	// open done chanel
+	doneCh := make(chan interface{})
+
 	// Create and run sys-mon
 	monInstance := sysmon.NewSysmon(*dataBuff, *answPeriod, *port)
-	err := monInstance.Run(*stdoutLog, sysSigCh)
+	err := monInstance.Run(doneCh, *stdoutLog)
 	if err != nil {
 		stdoutLog.Printf("ERROR: %v", err)
 	}
 
+	// Wait stop signal
 	<-sysSigCh
+	close(doneCh)
 	stdoutLog.Println("Got stop signal")
+
 	syscall.Exit(0)
 }

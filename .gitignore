@@ -8,7 +8,6 @@
 go-cp
 go-envdir
 go-telnet
-sys-mon
 protoc
 bin/*
 
