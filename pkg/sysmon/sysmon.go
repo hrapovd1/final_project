@@ -1,14 +1,43 @@
 package sysmon
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"os"
-	"time"
+	"strconv"
 
 	smgrpc "github.com/hrapovd1/final_project/pkg/smgrpc"
 	grpc "google.golang.org/grpc"
+	metadata "google.golang.org/grpc/metadata"
 )
+
+type statServer struct {
+	smgrpc.UnimplementedStatServer
+}
+
+func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer) error {
+	//return status.Errorf(codes.Unimplemented, "method GetAll not implemented")
+	/*
+		fmt.Printf("--- ServerStreamingEcho ---\n")
+		// Create trailer in defer to record function return time.
+		defer func() {
+			trailer := metadata.Pairs("timestamp", time.Now().Format(timestampFormat))
+			stream.SetTrailer(trailer)
+		}()
+	*/
+	// Create and send header.
+	header := metadata.New(map[string]string{"application": "System monitoring"})
+	out.SendHeader(header)
+
+	fmt.Printf("request received: %v\n", query)
+
+	err := out.Send(&smgrpc.All{})
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 type Sysmon interface {
 	Run(logger log.Logger, sysCh <-chan os.Signal) error
@@ -56,15 +85,28 @@ func NewSysmon(dataBuff, answPeriod, port uint) Sysmon {
 }
 
 func (mst *monState) Run(logger log.Logger, sysCh <-chan os.Signal) error {
-	srvSock := "0.0.0.0" + ":" + string(smState.port)
+	srvSock := ":" + strconv.Itoa(int(smState.port))
 	lsn, err := net.Listen("tcp", srvSock)
 	if err != nil {
 		logger.Fatal(err)
 	}
 
-	server := grpc.NewServer()
-	var statServer smgrpc.UnimplementedStatServer
-	smgrpc.RegisterStatServer(server, statServer)
+	defer lsn.Close()
 
+	server := grpc.NewServer()
+	smgrpc.RegisterStatServer(server, &statServer{})
+
+	logger.Printf("open port %v", smState.port)
+
+	go func() {
+		err = server.Serve(lsn)
+		if err != nil {
+			logger.Fatal("Unable to start server:", err)
+		}
+	}()
+
+	<-sysCh
+
+	server.Stop()
 	return nil
 }

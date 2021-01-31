@@ -39,8 +39,6 @@ func main() {
 		stdoutLog.Printf("ERROR: %v", err)
 	}
 
-	stdoutLog.Println("wait for init service...")
-
 	<-sysSigCh
 	stdoutLog.Println("Got stop signal")
 	syscall.Exit(0)
