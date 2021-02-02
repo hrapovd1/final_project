@@ -32,6 +32,8 @@ github.com/hrapovd1/final_project/pkg/smgrpc v0.0.0-20210131152050-137eff48d6dd 
 github.com/hrapovd1/final_project/pkg/smgrpc v0.0.0-20210131152050-137eff48d6dd/go.mod h1:0XQqZFM9/aMQChuL5+Xx4rXEJThBRrFh57pn5KIvPvE=
 github.com/hrapovd1/final_project/pkg/smgrpc v0.0.0-20210131153301-b555f914dff4 h1:tFpk7DEN6BVPl5aUynlsta91tK1PTJuBgm0GyiS/3nc=
 github.com/hrapovd1/final_project/pkg/smgrpc v0.0.0-20210131153301-b555f914dff4/go.mod h1:0XQqZFM9/aMQChuL5+Xx4rXEJThBRrFh57pn5KIvPvE=
+github.com/hrapovd1/final_project/pkg/smgrpc v0.0.0-20210131205428-2573029ed735 h1:2w1ukDnLn/89ZSeSkLVJhptK2HkOFAHJLwxb4ME7I3c=
+github.com/hrapovd1/final_project/pkg/smgrpc v0.0.0-20210131205428-2573029ed735/go.mod h1:0XQqZFM9/aMQChuL5+Xx4rXEJThBRrFh57pn5KIvPvE=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
@@ -84,6 +86,8 @@ google.golang.org/grpc v1.25.1/go.mod h1:c3i+UQWmh7LiEpx4sFZnkU36qjEYZ0imhYfXVyQ
 google.golang.org/grpc v1.27.0/go.mod h1:qbnxyOmOxrQa7FizSgH+ReBfzJrCY1pSN7KXBS8abTk=
 google.golang.org/grpc v1.35.0 h1:TwIQcH3es+MojMVojxxfQ3l3OF2KzlRxML2xZq0kRo8=
 google.golang.org/grpc v1.35.0/go.mod h1:qjiiYl8FncCW8feJPdyg3v6XW24KsRHe+dy9BAGRRjU=
+google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0 h1:M1YKkFIboKNieVO5DLUEVzQfGwJD30Nv2jfUgzb5UcE=
+google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0/go.mod h1:6Kw0yEErY5E/yWrBtf03jp27GLLJujG4z/JK95pnjjw=
 google.golang.org/protobuf v0.0.0-20200109180630-ec00e32a8dfd/go.mod h1:DFci5gLYBciE7Vtevhsrf46CRTquxDuWsQurQQe4oz8=
 google.golang.org/protobuf v0.0.0-20200221191635-4d8936d0db64/go.mod h1:kwYJMbMJ01Woi6D6+Kah6886xMZcty6N08ah7+eCXa0=
 google.golang.org/protobuf v0.0.0-20200228230310-ab0ca4ff8a60/go.mod h1:cfTl7dwQJ+fmap5saPgwCLgHXTUD7jkjRqWcaiX5VyM=

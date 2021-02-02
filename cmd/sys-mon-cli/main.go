@@ -37,6 +37,6 @@ func main() {
 		if err != nil {
 			log.Fatalf("when read message, got: %v", err)
 		}
-		fmt.Printf(" - %s\n", msg)
+		fmt.Printf(" - \n%v\n", msg)
 	}
 }

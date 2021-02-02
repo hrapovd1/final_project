@@ -2,16 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.25.0
 // 	protoc        v3.14.0
-// source: smgrpc.proto
+// source: pkg/smgrpc/smgrpc.proto
 
 package smgrpc
 
 import (
-	context "context"
 	proto "github.com/golang/protobuf/proto"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -40,7 +36,7 @@ type Request struct {
 func (x *Request) Reset() {
 	*x = Request{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[0]
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -53,7 +49,7 @@ func (x *Request) String() string {
 func (*Request) ProtoMessage() {}
 
 func (x *Request) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[0]
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -66,7 +62,7 @@ func (x *Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Request.ProtoReflect.Descriptor instead.
 func (*Request) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{0}
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Request) GetSent() bool {
@@ -89,7 +85,7 @@ type NetProtoTalker struct {
 func (x *NetProtoTalker) Reset() {
 	*x = NetProtoTalker{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[1]
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -102,7 +98,7 @@ func (x *NetProtoTalker) String() string {
 func (*NetProtoTalker) ProtoMessage() {}
 
 func (x *NetProtoTalker) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[1]
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -115,7 +111,7 @@ func (x *NetProtoTalker) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NetProtoTalker.ProtoReflect.Descriptor instead.
 func (*NetProtoTalker) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{1}
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *NetProtoTalker) GetProto() string {
@@ -153,7 +149,7 @@ type NetRateTalker struct {
 func (x *NetRateTalker) Reset() {
 	*x = NetRateTalker{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[2]
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -166,7 +162,7 @@ func (x *NetRateTalker) String() string {
 func (*NetRateTalker) ProtoMessage() {}
 
 func (x *NetRateTalker) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[2]
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -179,7 +175,7 @@ func (x *NetRateTalker) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NetRateTalker.ProtoReflect.Descriptor instead.
 func (*NetRateTalker) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{2}
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *NetRateTalker) GetProto() string {
@@ -223,7 +219,7 @@ type Fs struct {
 func (x *Fs) Reset() {
 	*x = Fs{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[3]
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -236,7 +232,7 @@ func (x *Fs) String() string {
 func (*Fs) ProtoMessage() {}
 
 func (x *Fs) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[3]
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -249,7 +245,7 @@ func (x *Fs) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Fs.ProtoReflect.Descriptor instead.
 func (*Fs) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{3}
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Fs) GetName() string {
@@ -288,7 +284,7 @@ type Listen struct {
 func (x *Listen) Reset() {
 	*x = Listen{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[4]
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -301,7 +297,7 @@ func (x *Listen) String() string {
 func (*Listen) ProtoMessage() {}
 
 func (x *Listen) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[4]
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -314,7 +310,7 @@ func (x *Listen) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Listen.ProtoReflect.Descriptor instead.
 func (*Listen) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{4}
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Listen) GetCmd() string {
@@ -352,16 +348,237 @@ func (x *Listen) GetPort() uint32 {
 	return 0
 }
 
+type LoadAverage struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Load uint32 `protobuf:"varint,1,opt,name=load,proto3" json:"load,omitempty"`
+}
+
+func (x *LoadAverage) Reset() {
+	*x = LoadAverage{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *LoadAverage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoadAverage) ProtoMessage() {}
+
+func (x *LoadAverage) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoadAverage.ProtoReflect.Descriptor instead.
+func (*LoadAverage) Descriptor() ([]byte, []int) {
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *LoadAverage) GetLoad() uint32 {
+	if x != nil {
+		return x.Load
+	}
+	return 0
+}
+
+type Cpu struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Sys  uint32 `protobuf:"varint,1,opt,name=sys,proto3" json:"sys,omitempty"`
+	User uint32 `protobuf:"varint,2,opt,name=user,proto3" json:"user,omitempty"`
+	Idle uint32 `protobuf:"varint,3,opt,name=idle,proto3" json:"idle,omitempty"`
+}
+
+func (x *Cpu) Reset() {
+	*x = Cpu{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Cpu) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Cpu) ProtoMessage() {}
+
+func (x *Cpu) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Cpu.ProtoReflect.Descriptor instead.
+func (*Cpu) Descriptor() ([]byte, []int) {
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *Cpu) GetSys() uint32 {
+	if x != nil {
+		return x.Sys
+	}
+	return 0
+}
+
+func (x *Cpu) GetUser() uint32 {
+	if x != nil {
+		return x.User
+	}
+	return 0
+}
+
+func (x *Cpu) GetIdle() uint32 {
+	if x != nil {
+		return x.Idle
+	}
+	return 0
+}
+
+type Disk struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Tps  uint32 `protobuf:"varint,1,opt,name=tps,proto3" json:"tps,omitempty"`
+	Kbps uint32 `protobuf:"varint,2,opt,name=kbps,proto3" json:"kbps,omitempty"`
+}
+
+func (x *Disk) Reset() {
+	*x = Disk{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Disk) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Disk) ProtoMessage() {}
+
+func (x *Disk) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Disk.ProtoReflect.Descriptor instead.
+func (*Disk) Descriptor() ([]byte, []int) {
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *Disk) GetTps() uint32 {
+	if x != nil {
+		return x.Tps
+	}
+	return 0
+}
+
+func (x *Disk) GetKbps() uint32 {
+	if x != nil {
+		return x.Kbps
+	}
+	return 0
+}
+
+type TcpConnections struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Count uint32 `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+}
+
+func (x *TcpConnections) Reset() {
+	*x = TcpConnections{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TcpConnections) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TcpConnections) ProtoMessage() {}
+
+func (x *TcpConnections) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TcpConnections.ProtoReflect.Descriptor instead.
+func (*TcpConnections) Descriptor() ([]byte, []int) {
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *TcpConnections) GetCount() uint32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
 type All struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	LoadAverage  *LoadAverage      `protobuf:"bytes,1,opt,name=loadAverage,proto3" json:"loadAverage,omitempty"`
+	Cpu          *Cpu              `protobuf:"bytes,2,opt,name=cpu,proto3" json:"cpu,omitempty"`
+	Disk         *Disk             `protobuf:"bytes,3,opt,name=disk,proto3" json:"disk,omitempty"`
+	Partitions   []*Fs             `protobuf:"bytes,4,rep,name=partitions,proto3" json:"partitions,omitempty"`
+	Connections  *TcpConnections   `protobuf:"bytes,5,opt,name=connections,proto3" json:"connections,omitempty"`
+	Listners     []*Listen         `protobuf:"bytes,6,rep,name=listners,proto3" json:"listners,omitempty"`
+	ProtoTalkers []*NetProtoTalker `protobuf:"bytes,7,rep,name=protoTalkers,proto3" json:"protoTalkers,omitempty"`
+	RateTalker   []*NetRateTalker  `protobuf:"bytes,8,rep,name=rateTalker,proto3" json:"rateTalker,omitempty"`
 }
 
 func (x *All) Reset() {
 	*x = All{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[5]
+		mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -374,7 +591,7 @@ func (x *All) String() string {
 func (*All) ProtoMessage() {}
 
 func (x *All) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[5]
+	mi := &file_pkg_smgrpc_smgrpc_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -387,521 +604,187 @@ func (x *All) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use All.ProtoReflect.Descriptor instead.
 func (*All) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{5}
+	return file_pkg_smgrpc_smgrpc_proto_rawDescGZIP(), []int{9}
 }
 
-type All_LoadAverage struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Load uint32 `protobuf:"varint,1,opt,name=load,proto3" json:"load,omitempty"`
-}
-
-func (x *All_LoadAverage) Reset() {
-	*x = All_LoadAverage{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[6]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *All_LoadAverage) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*All_LoadAverage) ProtoMessage() {}
-
-func (x *All_LoadAverage) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[6]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use All_LoadAverage.ProtoReflect.Descriptor instead.
-func (*All_LoadAverage) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{5, 0}
-}
-
-func (x *All_LoadAverage) GetLoad() uint32 {
+func (x *All) GetLoadAverage() *LoadAverage {
 	if x != nil {
-		return x.Load
-	}
-	return 0
-}
-
-type All_Cpu struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Sys  uint32 `protobuf:"varint,1,opt,name=sys,proto3" json:"sys,omitempty"`
-	User uint32 `protobuf:"varint,2,opt,name=user,proto3" json:"user,omitempty"`
-	Idle uint32 `protobuf:"varint,3,opt,name=idle,proto3" json:"idle,omitempty"`
-}
-
-func (x *All_Cpu) Reset() {
-	*x = All_Cpu{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[7]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *All_Cpu) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*All_Cpu) ProtoMessage() {}
-
-func (x *All_Cpu) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[7]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use All_Cpu.ProtoReflect.Descriptor instead.
-func (*All_Cpu) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{5, 1}
-}
-
-func (x *All_Cpu) GetSys() uint32 {
-	if x != nil {
-		return x.Sys
-	}
-	return 0
-}
-
-func (x *All_Cpu) GetUser() uint32 {
-	if x != nil {
-		return x.User
-	}
-	return 0
-}
-
-func (x *All_Cpu) GetIdle() uint32 {
-	if x != nil {
-		return x.Idle
-	}
-	return 0
-}
-
-type All_Disk struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Tps  uint32 `protobuf:"varint,1,opt,name=tps,proto3" json:"tps,omitempty"`
-	Kbps uint32 `protobuf:"varint,2,opt,name=kbps,proto3" json:"kbps,omitempty"`
-}
-
-func (x *All_Disk) Reset() {
-	*x = All_Disk{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[8]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *All_Disk) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*All_Disk) ProtoMessage() {}
-
-func (x *All_Disk) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[8]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use All_Disk.ProtoReflect.Descriptor instead.
-func (*All_Disk) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{5, 2}
-}
-
-func (x *All_Disk) GetTps() uint32 {
-	if x != nil {
-		return x.Tps
-	}
-	return 0
-}
-
-func (x *All_Disk) GetKbps() uint32 {
-	if x != nil {
-		return x.Kbps
-	}
-	return 0
-}
-
-type All_Allfs struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Partition []*Fs `protobuf:"bytes,1,rep,name=partition,proto3" json:"partition,omitempty"`
-}
-
-func (x *All_Allfs) Reset() {
-	*x = All_Allfs{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[9]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *All_Allfs) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*All_Allfs) ProtoMessage() {}
-
-func (x *All_Allfs) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[9]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use All_Allfs.ProtoReflect.Descriptor instead.
-func (*All_Allfs) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{5, 3}
-}
-
-func (x *All_Allfs) GetPartition() []*Fs {
-	if x != nil {
-		return x.Partition
+		return x.LoadAverage
 	}
 	return nil
 }
 
-type All_TcpConnections struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Count uint32 `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
-}
-
-func (x *All_TcpConnections) Reset() {
-	*x = All_TcpConnections{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[10]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *All_TcpConnections) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*All_TcpConnections) ProtoMessage() {}
-
-func (x *All_TcpConnections) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[10]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use All_TcpConnections.ProtoReflect.Descriptor instead.
-func (*All_TcpConnections) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{5, 4}
-}
-
-func (x *All_TcpConnections) GetCount() uint32 {
+func (x *All) GetCpu() *Cpu {
 	if x != nil {
-		return x.Count
-	}
-	return 0
-}
-
-type All_Sockets struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Listner []*Listen `protobuf:"bytes,1,rep,name=listner,proto3" json:"listner,omitempty"`
-}
-
-func (x *All_Sockets) Reset() {
-	*x = All_Sockets{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[11]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *All_Sockets) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*All_Sockets) ProtoMessage() {}
-
-func (x *All_Sockets) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[11]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use All_Sockets.ProtoReflect.Descriptor instead.
-func (*All_Sockets) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{5, 5}
-}
-
-func (x *All_Sockets) GetListner() []*Listen {
-	if x != nil {
-		return x.Listner
+		return x.Cpu
 	}
 	return nil
 }
 
-type All_NetProto struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Talker []*NetProtoTalker `protobuf:"bytes,1,rep,name=talker,proto3" json:"talker,omitempty"`
-}
-
-func (x *All_NetProto) Reset() {
-	*x = All_NetProto{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[12]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *All_NetProto) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*All_NetProto) ProtoMessage() {}
-
-func (x *All_NetProto) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[12]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use All_NetProto.ProtoReflect.Descriptor instead.
-func (*All_NetProto) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{5, 6}
-}
-
-func (x *All_NetProto) GetTalker() []*NetProtoTalker {
+func (x *All) GetDisk() *Disk {
 	if x != nil {
-		return x.Talker
+		return x.Disk
 	}
 	return nil
 }
 
-type All_NetRate struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Talker []*NetRateTalker `protobuf:"bytes,1,rep,name=talker,proto3" json:"talker,omitempty"`
-}
-
-func (x *All_NetRate) Reset() {
-	*x = All_NetRate{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_smgrpc_proto_msgTypes[13]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *All_NetRate) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*All_NetRate) ProtoMessage() {}
-
-func (x *All_NetRate) ProtoReflect() protoreflect.Message {
-	mi := &file_smgrpc_proto_msgTypes[13]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use All_NetRate.ProtoReflect.Descriptor instead.
-func (*All_NetRate) Descriptor() ([]byte, []int) {
-	return file_smgrpc_proto_rawDescGZIP(), []int{5, 7}
-}
-
-func (x *All_NetRate) GetTalker() []*NetRateTalker {
+func (x *All) GetPartitions() []*Fs {
 	if x != nil {
-		return x.Talker
+		return x.Partitions
 	}
 	return nil
 }
 
-var File_smgrpc_proto protoreflect.FileDescriptor
+func (x *All) GetConnections() *TcpConnections {
+	if x != nil {
+		return x.Connections
+	}
+	return nil
+}
 
-var file_smgrpc_proto_rawDesc = []byte{
-	0x0a, 0x0c, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x06,
-	0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x22, 0x1d, 0x0a, 0x07, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52,
-	0x04, 0x73, 0x65, 0x6e, 0x74, 0x22, 0x50, 0x0a, 0x0e, 0x4e, 0x65, 0x74, 0x50, 0x72, 0x6f, 0x74,
-	0x6f, 0x54, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x14, 0x0a,
-	0x05, 0x62, 0x79, 0x74, 0x65, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x62, 0x79,
-	0x74, 0x65, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x72, 0x61, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
-	0x0d, 0x52, 0x04, 0x72, 0x61, 0x74, 0x65, 0x22, 0x63, 0x0a, 0x0d, 0x4e, 0x65, 0x74, 0x52, 0x61,
-	0x74, 0x65, 0x54, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x14,
-	0x0a, 0x05, 0x73, 0x70, 0x6f, 0x72, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x73,
-	0x70, 0x6f, 0x72, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x64, 0x70, 0x6f, 0x72, 0x74, 0x18, 0x03, 0x20,
-	0x01, 0x28, 0x0d, 0x52, 0x05, 0x64, 0x70, 0x6f, 0x72, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x62, 0x70,
-	0x73, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03, 0x62, 0x70, 0x73, 0x22, 0x42, 0x0a, 0x02,
-	0x46, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x64, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x75, 0x73, 0x65, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x75,
-	0x73, 0x65, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x69, 0x75, 0x73, 0x65, 0x64,
-	0x22, 0x6a, 0x0a, 0x06, 0x4c, 0x69, 0x73, 0x74, 0x65, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x63, 0x6d,
-	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x63, 0x6d, 0x64, 0x12, 0x12, 0x0a, 0x04,
-	0x75, 0x73, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72,
-	0x12, 0x10, 0x0a, 0x03, 0x70, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03, 0x70,
-	0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x6f, 0x72, 0x74,
-	0x18, 0x05, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x70, 0x6f, 0x72, 0x74, 0x22, 0x9d, 0x03, 0x0a,
-	0x03, 0x41, 0x6c, 0x6c, 0x1a, 0x21, 0x0a, 0x0b, 0x4c, 0x6f, 0x61, 0x64, 0x41, 0x76, 0x65, 0x72,
-	0x61, 0x67, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6c, 0x6f, 0x61, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x0d, 0x52, 0x04, 0x6c, 0x6f, 0x61, 0x64, 0x1a, 0x3f, 0x0a, 0x03, 0x43, 0x70, 0x75, 0x12, 0x10,
-	0x0a, 0x03, 0x73, 0x79, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03, 0x73, 0x79, 0x73,
-	0x12, 0x12, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04,
-	0x75, 0x73, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x69, 0x64, 0x6c, 0x65, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x0d, 0x52, 0x04, 0x69, 0x64, 0x6c, 0x65, 0x1a, 0x2c, 0x0a, 0x04, 0x44, 0x69, 0x73, 0x6b,
-	0x12, 0x10, 0x0a, 0x03, 0x74, 0x70, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03, 0x74,
-	0x70, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x62, 0x70, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d,
-	0x52, 0x04, 0x6b, 0x62, 0x70, 0x73, 0x1a, 0x31, 0x0a, 0x05, 0x41, 0x6c, 0x6c, 0x66, 0x73, 0x12,
-	0x28, 0x0a, 0x09, 0x70, 0x61, 0x72, 0x74, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x03,
-	0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x46, 0x73, 0x52, 0x09,
-	0x70, 0x61, 0x72, 0x74, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x26, 0x0a, 0x0e, 0x54, 0x63, 0x70,
+func (x *All) GetListners() []*Listen {
+	if x != nil {
+		return x.Listners
+	}
+	return nil
+}
+
+func (x *All) GetProtoTalkers() []*NetProtoTalker {
+	if x != nil {
+		return x.ProtoTalkers
+	}
+	return nil
+}
+
+func (x *All) GetRateTalker() []*NetRateTalker {
+	if x != nil {
+		return x.RateTalker
+	}
+	return nil
+}
+
+var File_pkg_smgrpc_smgrpc_proto protoreflect.FileDescriptor
+
+var file_pkg_smgrpc_smgrpc_proto_rawDesc = []byte{
+	0x0a, 0x17, 0x70, 0x6b, 0x67, 0x2f, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2f, 0x73, 0x6d, 0x67,
+	0x72, 0x70, 0x63, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x06, 0x73, 0x6d, 0x67, 0x72, 0x70,
+	0x63, 0x22, 0x1d, 0x0a, 0x07, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04,
+	0x73, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x04, 0x73, 0x65, 0x6e, 0x74,
+	0x22, 0x50, 0x0a, 0x0e, 0x4e, 0x65, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x54, 0x61, 0x6c, 0x6b,
+	0x65, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x14, 0x0a, 0x05, 0x62, 0x79, 0x74, 0x65,
+	0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x62, 0x79, 0x74, 0x65, 0x73, 0x12, 0x12,
+	0x0a, 0x04, 0x72, 0x61, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x72, 0x61,
+	0x74, 0x65, 0x22, 0x63, 0x0a, 0x0d, 0x4e, 0x65, 0x74, 0x52, 0x61, 0x74, 0x65, 0x54, 0x61, 0x6c,
+	0x6b, 0x65, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x14, 0x0a, 0x05, 0x73, 0x70, 0x6f,
+	0x72, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x73, 0x70, 0x6f, 0x72, 0x74, 0x12,
+	0x14, 0x0a, 0x05, 0x64, 0x70, 0x6f, 0x72, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05,
+	0x64, 0x70, 0x6f, 0x72, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x62, 0x70, 0x73, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x0d, 0x52, 0x03, 0x62, 0x70, 0x73, 0x22, 0x42, 0x0a, 0x02, 0x46, 0x73, 0x12, 0x12, 0x0a,
+	0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d,
+	0x65, 0x12, 0x12, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0d, 0x52,
+	0x04, 0x75, 0x73, 0x65, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x75, 0x73, 0x65, 0x64, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x69, 0x75, 0x73, 0x65, 0x64, 0x22, 0x6a, 0x0a, 0x06, 0x4c,
+	0x69, 0x73, 0x74, 0x65, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x63, 0x6d, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x03, 0x63, 0x6d, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x12, 0x10, 0x0a, 0x03, 0x70,
+	0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03, 0x70, 0x69, 0x64, 0x12, 0x14, 0x0a,
+	0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x6f, 0x72, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28,
+	0x0d, 0x52, 0x04, 0x70, 0x6f, 0x72, 0x74, 0x22, 0x21, 0x0a, 0x0b, 0x4c, 0x6f, 0x61, 0x64, 0x41,
+	0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6c, 0x6f, 0x61, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x6c, 0x6f, 0x61, 0x64, 0x22, 0x3f, 0x0a, 0x03, 0x43, 0x70,
+	0x75, 0x12, 0x10, 0x0a, 0x03, 0x73, 0x79, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x03,
+	0x73, 0x79, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0d, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x69, 0x64, 0x6c, 0x65, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x69, 0x64, 0x6c, 0x65, 0x22, 0x2c, 0x0a, 0x04, 0x44,
+	0x69, 0x73, 0x6b, 0x12, 0x10, 0x0a, 0x03, 0x74, 0x70, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d,
+	0x52, 0x03, 0x74, 0x70, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x6b, 0x62, 0x70, 0x73, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x0d, 0x52, 0x04, 0x6b, 0x62, 0x70, 0x73, 0x22, 0x26, 0x0a, 0x0e, 0x54, 0x63, 0x70,
 	0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x63,
 	0x6f, 0x75, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x63, 0x6f, 0x75, 0x6e,
-	0x74, 0x1a, 0x33, 0x0a, 0x07, 0x53, 0x6f, 0x63, 0x6b, 0x65, 0x74, 0x73, 0x12, 0x28, 0x0a, 0x07,
-	0x6c, 0x69, 0x73, 0x74, 0x6e, 0x65, 0x72, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0e, 0x2e,
-	0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x65, 0x6e, 0x52, 0x07, 0x6c,
-	0x69, 0x73, 0x74, 0x6e, 0x65, 0x72, 0x1a, 0x3a, 0x0a, 0x08, 0x4e, 0x65, 0x74, 0x50, 0x72, 0x6f,
-	0x74, 0x6f, 0x12, 0x2e, 0x0a, 0x06, 0x74, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x18, 0x01, 0x20, 0x03,
-	0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x4e, 0x65, 0x74, 0x50,
-	0x72, 0x6f, 0x74, 0x6f, 0x54, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x52, 0x06, 0x74, 0x61, 0x6c, 0x6b,
-	0x65, 0x72, 0x1a, 0x38, 0x0a, 0x07, 0x4e, 0x65, 0x74, 0x52, 0x61, 0x74, 0x65, 0x12, 0x2d, 0x0a,
-	0x06, 0x74, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x15, 0x2e,
-	0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x4e, 0x65, 0x74, 0x52, 0x61, 0x74, 0x65, 0x54, 0x61,
-	0x6c, 0x6b, 0x65, 0x72, 0x52, 0x06, 0x74, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x32, 0x32, 0x0a, 0x04,
-	0x53, 0x74, 0x61, 0x74, 0x12, 0x2a, 0x0a, 0x06, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x12, 0x0f,
-	0x2e, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x0b, 0x2e, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x41, 0x6c, 0x6c, 0x22, 0x00, 0x30, 0x01,
-	0x42, 0x0a, 0x5a, 0x08, 0x2e, 0x3b, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x22, 0x82, 0x03, 0x0a, 0x03, 0x41, 0x6c, 0x6c, 0x12, 0x35, 0x0a, 0x0b, 0x6c, 0x6f, 0x61,
+	0x64, 0x41, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x13,
+	0x2e, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x4c, 0x6f, 0x61, 0x64, 0x41, 0x76, 0x65, 0x72,
+	0x61, 0x67, 0x65, 0x52, 0x0b, 0x6c, 0x6f, 0x61, 0x64, 0x41, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65,
+	0x12, 0x1d, 0x0a, 0x03, 0x63, 0x70, 0x75, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0b, 0x2e,
+	0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x43, 0x70, 0x75, 0x52, 0x03, 0x63, 0x70, 0x75, 0x12,
+	0x20, 0x0a, 0x04, 0x64, 0x69, 0x73, 0x6b, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0c, 0x2e,
+	0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x44, 0x69, 0x73, 0x6b, 0x52, 0x04, 0x64, 0x69, 0x73,
+	0x6b, 0x12, 0x2a, 0x0a, 0x0a, 0x70, 0x61, 0x72, 0x74, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18,
+	0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x46,
+	0x73, 0x52, 0x0a, 0x70, 0x61, 0x72, 0x74, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x38, 0x0a,
+	0x0b, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x05, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x54, 0x63, 0x70, 0x43,
+	0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x52, 0x0b, 0x63, 0x6f, 0x6e, 0x6e,
+	0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x2a, 0x0a, 0x08, 0x6c, 0x69, 0x73, 0x74, 0x6e,
+	0x65, 0x72, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x73, 0x6d, 0x67, 0x72,
+	0x70, 0x63, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x65, 0x6e, 0x52, 0x08, 0x6c, 0x69, 0x73, 0x74, 0x6e,
+	0x65, 0x72, 0x73, 0x12, 0x3a, 0x0a, 0x0c, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x54, 0x61, 0x6c, 0x6b,
+	0x65, 0x72, 0x73, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x73, 0x6d, 0x67, 0x72,
+	0x70, 0x63, 0x2e, 0x4e, 0x65, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x54, 0x61, 0x6c, 0x6b, 0x65,
+	0x72, 0x52, 0x0c, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x54, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x73, 0x12,
+	0x35, 0x0a, 0x0a, 0x72, 0x61, 0x74, 0x65, 0x54, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x18, 0x08, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x2e, 0x4e, 0x65, 0x74,
+	0x52, 0x61, 0x74, 0x65, 0x54, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x52, 0x0a, 0x72, 0x61, 0x74, 0x65,
+	0x54, 0x61, 0x6c, 0x6b, 0x65, 0x72, 0x32, 0x32, 0x0a, 0x04, 0x53, 0x74, 0x61, 0x74, 0x12, 0x2a,
+	0x0a, 0x06, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x12, 0x0f, 0x2e, 0x73, 0x6d, 0x67, 0x72, 0x70,
+	0x63, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x0b, 0x2e, 0x73, 0x6d, 0x67, 0x72,
+	0x70, 0x63, 0x2e, 0x41, 0x6c, 0x6c, 0x22, 0x00, 0x30, 0x01, 0x42, 0x0a, 0x5a, 0x08, 0x2e, 0x3b,
+	0x73, 0x6d, 0x67, 0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_smgrpc_proto_rawDescOnce sync.Once
-	file_smgrpc_proto_rawDescData = file_smgrpc_proto_rawDesc
+	file_pkg_smgrpc_smgrpc_proto_rawDescOnce sync.Once
+	file_pkg_smgrpc_smgrpc_proto_rawDescData = file_pkg_smgrpc_smgrpc_proto_rawDesc
 )
 
-func file_smgrpc_proto_rawDescGZIP() []byte {
-	file_smgrpc_proto_rawDescOnce.Do(func() {
-		file_smgrpc_proto_rawDescData = protoimpl.X.CompressGZIP(file_smgrpc_proto_rawDescData)
+func file_pkg_smgrpc_smgrpc_proto_rawDescGZIP() []byte {
+	file_pkg_smgrpc_smgrpc_proto_rawDescOnce.Do(func() {
+		file_pkg_smgrpc_smgrpc_proto_rawDescData = protoimpl.X.CompressGZIP(file_pkg_smgrpc_smgrpc_proto_rawDescData)
 	})
-	return file_smgrpc_proto_rawDescData
+	return file_pkg_smgrpc_smgrpc_proto_rawDescData
 }
 
-var file_smgrpc_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
-var file_smgrpc_proto_goTypes = []interface{}{
-	(*Request)(nil),            // 0: smgrpc.Request
-	(*NetProtoTalker)(nil),     // 1: smgrpc.NetProtoTalker
-	(*NetRateTalker)(nil),      // 2: smgrpc.NetRateTalker
-	(*Fs)(nil),                 // 3: smgrpc.Fs
-	(*Listen)(nil),             // 4: smgrpc.Listen
-	(*All)(nil),                // 5: smgrpc.All
-	(*All_LoadAverage)(nil),    // 6: smgrpc.All.LoadAverage
-	(*All_Cpu)(nil),            // 7: smgrpc.All.Cpu
-	(*All_Disk)(nil),           // 8: smgrpc.All.Disk
-	(*All_Allfs)(nil),          // 9: smgrpc.All.Allfs
-	(*All_TcpConnections)(nil), // 10: smgrpc.All.TcpConnections
-	(*All_Sockets)(nil),        // 11: smgrpc.All.Sockets
-	(*All_NetProto)(nil),       // 12: smgrpc.All.NetProto
-	(*All_NetRate)(nil),        // 13: smgrpc.All.NetRate
+var file_pkg_smgrpc_smgrpc_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_pkg_smgrpc_smgrpc_proto_goTypes = []interface{}{
+	(*Request)(nil),        // 0: smgrpc.Request
+	(*NetProtoTalker)(nil), // 1: smgrpc.NetProtoTalker
+	(*NetRateTalker)(nil),  // 2: smgrpc.NetRateTalker
+	(*Fs)(nil),             // 3: smgrpc.Fs
+	(*Listen)(nil),         // 4: smgrpc.Listen
+	(*LoadAverage)(nil),    // 5: smgrpc.LoadAverage
+	(*Cpu)(nil),            // 6: smgrpc.Cpu
+	(*Disk)(nil),           // 7: smgrpc.Disk
+	(*TcpConnections)(nil), // 8: smgrpc.TcpConnections
+	(*All)(nil),            // 9: smgrpc.All
 }
-var file_smgrpc_proto_depIdxs = []int32{
-	3, // 0: smgrpc.All.Allfs.partition:type_name -> smgrpc.Fs
-	4, // 1: smgrpc.All.Sockets.listner:type_name -> smgrpc.Listen
-	1, // 2: smgrpc.All.NetProto.talker:type_name -> smgrpc.NetProtoTalker
-	2, // 3: smgrpc.All.NetRate.talker:type_name -> smgrpc.NetRateTalker
-	0, // 4: smgrpc.Stat.GetAll:input_type -> smgrpc.Request
-	5, // 5: smgrpc.Stat.GetAll:output_type -> smgrpc.All
-	5, // [5:6] is the sub-list for method output_type
-	4, // [4:5] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+var file_pkg_smgrpc_smgrpc_proto_depIdxs = []int32{
+	5, // 0: smgrpc.All.loadAverage:type_name -> smgrpc.LoadAverage
+	6, // 1: smgrpc.All.cpu:type_name -> smgrpc.Cpu
+	7, // 2: smgrpc.All.disk:type_name -> smgrpc.Disk
+	3, // 3: smgrpc.All.partitions:type_name -> smgrpc.Fs
+	8, // 4: smgrpc.All.connections:type_name -> smgrpc.TcpConnections
+	4, // 5: smgrpc.All.listners:type_name -> smgrpc.Listen
+	1, // 6: smgrpc.All.protoTalkers:type_name -> smgrpc.NetProtoTalker
+	2, // 7: smgrpc.All.rateTalker:type_name -> smgrpc.NetRateTalker
+	0, // 8: smgrpc.Stat.GetAll:input_type -> smgrpc.Request
+	9, // 9: smgrpc.Stat.GetAll:output_type -> smgrpc.All
+	9, // [9:10] is the sub-list for method output_type
+	8, // [8:9] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
-func init() { file_smgrpc_proto_init() }
-func file_smgrpc_proto_init() {
-	if File_smgrpc_proto != nil {
+func init() { file_pkg_smgrpc_smgrpc_proto_init() }
+func file_pkg_smgrpc_smgrpc_proto_init() {
+	if File_pkg_smgrpc_smgrpc_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_smgrpc_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Request); i {
 			case 0:
 				return &v.state
@@ -913,7 +796,7 @@ func file_smgrpc_proto_init() {
 				return nil
 			}
 		}
-		file_smgrpc_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NetProtoTalker); i {
 			case 0:
 				return &v.state
@@ -925,7 +808,7 @@ func file_smgrpc_proto_init() {
 				return nil
 			}
 		}
-		file_smgrpc_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NetRateTalker); i {
 			case 0:
 				return &v.state
@@ -937,7 +820,7 @@ func file_smgrpc_proto_init() {
 				return nil
 			}
 		}
-		file_smgrpc_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Fs); i {
 			case 0:
 				return &v.state
@@ -949,7 +832,7 @@ func file_smgrpc_proto_init() {
 				return nil
 			}
 		}
-		file_smgrpc_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Listen); i {
 			case 0:
 				return &v.state
@@ -961,104 +844,56 @@ func file_smgrpc_proto_init() {
 				return nil
 			}
 		}
-		file_smgrpc_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*LoadAverage); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Cpu); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Disk); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*TcpConnections); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_smgrpc_smgrpc_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*All); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_smgrpc_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*All_LoadAverage); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_smgrpc_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*All_Cpu); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_smgrpc_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*All_Disk); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_smgrpc_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*All_Allfs); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_smgrpc_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*All_TcpConnections); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_smgrpc_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*All_Sockets); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_smgrpc_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*All_NetProto); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_smgrpc_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*All_NetRate); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1074,125 +909,18 @@ func file_smgrpc_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_smgrpc_proto_rawDesc,
+			RawDescriptor: file_pkg_smgrpc_smgrpc_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_smgrpc_proto_goTypes,
-		DependencyIndexes: file_smgrpc_proto_depIdxs,
-		MessageInfos:      file_smgrpc_proto_msgTypes,
+		GoTypes:           file_pkg_smgrpc_smgrpc_proto_goTypes,
+		DependencyIndexes: file_pkg_smgrpc_smgrpc_proto_depIdxs,
+		MessageInfos:      file_pkg_smgrpc_smgrpc_proto_msgTypes,
 	}.Build()
-	File_smgrpc_proto = out.File
-	file_smgrpc_proto_rawDesc = nil
-	file_smgrpc_proto_goTypes = nil
-	file_smgrpc_proto_depIdxs = nil
-}
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConnInterface
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
-
-// StatClient is the client API for Stat service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type StatClient interface {
-	GetAll(ctx context.Context, in *Request, opts ...grpc.CallOption) (Stat_GetAllClient, error)
-}
-
-type statClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewStatClient(cc grpc.ClientConnInterface) StatClient {
-	return &statClient{cc}
-}
-
-func (c *statClient) GetAll(ctx context.Context, in *Request, opts ...grpc.CallOption) (Stat_GetAllClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Stat_serviceDesc.Streams[0], "/smgrpc.Stat/GetAll", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &statGetAllClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type Stat_GetAllClient interface {
-	Recv() (*All, error)
-	grpc.ClientStream
-}
-
-type statGetAllClient struct {
-	grpc.ClientStream
-}
-
-func (x *statGetAllClient) Recv() (*All, error) {
-	m := new(All)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-// StatServer is the server API for Stat service.
-type StatServer interface {
-	GetAll(*Request, Stat_GetAllServer) error
-}
-
-// UnimplementedStatServer can be embedded to have forward compatible implementations.
-type UnimplementedStatServer struct {
-}
-
-func (*UnimplementedStatServer) GetAll(*Request, Stat_GetAllServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetAll not implemented")
-}
-
-func RegisterStatServer(s *grpc.Server, srv StatServer) {
-	s.RegisterService(&_Stat_serviceDesc, srv)
-}
-
-func _Stat_GetAll_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(Request)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(StatServer).GetAll(m, &statGetAllServer{stream})
-}
-
-type Stat_GetAllServer interface {
-	Send(*All) error
-	grpc.ServerStream
-}
-
-type statGetAllServer struct {
-	grpc.ServerStream
-}
-
-func (x *statGetAllServer) Send(m *All) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-var _Stat_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "smgrpc.Stat",
-	HandlerType: (*StatServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "GetAll",
-			Handler:       _Stat_GetAll_Handler,
-			ServerStreams: true,
-		},
-	},
-	Metadata: "smgrpc.proto",
+	File_pkg_smgrpc_smgrpc_proto = out.File
+	file_pkg_smgrpc_smgrpc_proto_rawDesc = nil
+	file_pkg_smgrpc_smgrpc_proto_goTypes = nil
+	file_pkg_smgrpc_smgrpc_proto_depIdxs = nil
 }

@@ -34,41 +34,42 @@ message Listen {
 	uint32 port = 5;
 }
 
+message LoadAverage {
+	uint32 load = 1;
+}
+
+message Cpu {
+	uint32 sys = 1;
+	uint32 user = 2;
+	uint32 idle = 3;
+}
+	
+message Disk {
+	uint32 tps = 1;
+	uint32 kbps = 2;
+}
+	
+message TcpConnections {
+	uint32 count = 1;
+}
+
 message All {
-	message LoadAverage {
-		uint32 load = 1;
-	}
 	
-	message Cpu {
-		uint32 sys = 1;
-		uint32 user = 2;
-		uint32 idle = 3;
-	}
+	LoadAverage loadAverage = 1;
 	
-	message Disk {
-		uint32 tps = 1;
-		uint32 kbps = 2;
-	}
+	Cpu cpu = 2;
 	
-	message Allfs {
-		repeated Fs partition = 1;
-	}
+	Disk disk = 3;
 	
-	message TcpConnections {
-		uint32 count = 1;
-	}
+	repeated Fs partitions = 4;
 	
-	message Sockets {
-		repeated Listen listner = 1;
-	}
+	TcpConnections connections = 5;
 	
-	message NetProto {
-		repeated NetProtoTalker talker = 1;
-	}
+	repeated Listen listners = 6;
 	
-	message NetRate {
-		repeated NetRateTalker talker = 1;
-	}
+	repeated NetProtoTalker protoTalkers = 7;
+	
+	repeated NetRateTalker rateTalker = 8;
 }
 
 service Stat {
