@@ -8,7 +8,7 @@ replace github.com/hrapovd1/final_project/pkg/smgrpc => ./pkg/smgrpc
 
 require (
 	github.com/golang/protobuf v1.4.3 // indirect
-	github.com/hrapovd1/final_project/pkg/smgrpc v0.0.0-20210131205428-2573029ed735 // indirect
-	github.com/hrapovd1/final_project/pkg/sysmon v0.0.0-00010101000000-000000000000 // indirect
-	google.golang.org/grpc v1.35.0 // indirect
+	github.com/hrapovd1/final_project/pkg/smgrpc v0.0.0-20210131205428-2573029ed735
+	github.com/hrapovd1/final_project/pkg/sysmon v0.0.0-00010101000000-000000000000
+	google.golang.org/grpc v1.35.0
 )
