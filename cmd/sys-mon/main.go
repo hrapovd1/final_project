@@ -46,6 +46,4 @@ func main() {
 	<-sysSigCh
 	close(doneCh)
 	stdoutLog.Println("Got stop signal")
-
-	syscall.Exit(0)
 }

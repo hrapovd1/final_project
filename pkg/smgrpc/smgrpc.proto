@@ -10,7 +10,7 @@ message Request {
 message NetProtoTalker {
 	string proto = 1;
 	uint32 bytes = 2;
-	uint32 rate = 3;
+	float rate = 3;
 }
 
 message NetRateTalker {
@@ -22,8 +22,8 @@ message NetRateTalker {
 
 message Fs {
 	string name = 1;
-	uint32 used = 2;
-	uint32 iused = 3;
+	float used = 2;
+	float iused = 3;
 }
 
 message Listen {
@@ -35,18 +35,18 @@ message Listen {
 }
 
 message LoadAverage {
-	uint32 load = 1;
+	float load = 1;
 }
 
 message Cpu {
-	uint32 sys = 1;
-	uint32 user = 2;
-	uint32 idle = 3;
+	float sys = 1;
+	float user = 2;
+	float idle = 3;
 }
 	
 message Disk {
-	uint32 tps = 1;
-	uint32 kbps = 2;
+	float tps = 1;
+	float kbps = 2;
 }
 	
 message TcpConnections {

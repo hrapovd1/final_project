@@ -11,4 +11,5 @@ require (
 	github.com/hrapovd1/final_project/pkg/smgrpc v0.0.0-20210131205428-2573029ed735
 	github.com/hrapovd1/final_project/pkg/sysmon v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.35.0
+	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0 // indirect
 )

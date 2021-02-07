@@ -34,10 +34,10 @@ type listner struct {
 
 // Type for store monitoring data scrape
 type monState struct {
-	loadAver   uint
-	cpu        [3]uint
-	diskLoad   [2]uint
-	fsUsage    map[string][2]uint
+	loadAver   float32
+	cpu        [3]float32
+	diskLoad   [2]float32
+	fsUsage    map[string][2]float32
 	netListner listner
 	netSocks   uint
 }
@@ -56,16 +56,23 @@ func NewSysmon(dataBuff, answPeriod, port uint) Sysmon {
 		dataBuff:   dataBuff,
 		answPeriod: answPeriod,
 	}
-	// sys-mon scrapes buffer
-	smBuff := make(monStateBuff, dataBuff)
+	smBuff := make(monStateBuff, dataBuff) // sys-mon scrapes buffer
+
 	return &smBuff
 }
 
 // aggregate data from agents and sent "All" messages in grpc
-func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, agents map[string]chan monState, messages chan *smgrpc.All) error {
+func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *smgrpc.All, logger *log.Logger) error {
 	count := 0
 	answer := time.NewTicker(time.Duration(smState.answPeriod) * time.Second)
 	second := time.NewTicker(time.Second)
+	condMu := new(sync.Mutex)
+	cond := sync.NewCond(condMu)
+
+	agents, err := runAgents(doneCh, cond, logger) //Function defined in agents.go file
+	if err != nil {
+		logger.Fatal("Run agents error: ", err)
+	}
 
 	// ask agents every second
 	go func() {
@@ -78,51 +85,36 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, agents map[stri
 				}
 				var wg sync.WaitGroup
 				wg.Add(6)
-				/*
-					type monState struct {
-						loadAver   uint
-						cpu        [3]uint
-						diskLoad   [2]uint
-						fsUsage    map[string][2]uint
-						netListner listner
-						netSocks   uint
-					}
-				*/
-				go func() {
-					defer wg.Done()
-					agents["loadAver"] <- monState{}
+				cond.Broadcast()
+				func() {
 					msg := <-agents["loadAver"]
 					(*mst)[count].loadAver = msg.loadAver
+					wg.Done()
 				}()
-				go func() {
-					defer wg.Done()
-					agents["cpu"] <- monState{}
-					msg := <-agents["loadAver"]
+				func() {
+					msg := <-agents["cpu"]
 					(*mst)[count].cpu = msg.cpu
+					wg.Done()
 				}()
-				go func() {
-					defer wg.Done()
-					agents["diskLoad"] <- monState{}
-					msg := <-agents["loadAver"]
+				func() {
+					msg := <-agents["diskLoad"]
 					(*mst)[count].diskLoad = msg.diskLoad
+					wg.Done()
 				}()
-				go func() {
-					defer wg.Done()
-					agents["fsUsage"] <- monState{}
-					msg := <-agents["loadAver"]
+				func() {
+					msg := <-agents["fsUsage"]
 					(*mst)[count].fsUsage = msg.fsUsage
+					wg.Done()
 				}()
-				go func() {
-					defer wg.Done()
-					agents["netListner"] <- monState{}
-					msg := <-agents["loadAver"]
+				func() {
+					msg := <-agents["netListner"]
 					(*mst)[count].netListner = msg.netListner
+					wg.Done()
 				}()
-				go func() {
-					defer wg.Done()
-					agents["netSocks"] <- monState{}
-					msg := <-agents["loadAver"]
+				func() {
+					msg := <-agents["netSocks"]
 					(*mst)[count].netSocks = msg.netSocks
+					wg.Done()
 				}()
 				wg.Wait()
 				count++
@@ -156,9 +148,9 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, agents map[stri
 					   }
 					*/
 					messages <- &smgrpc.All{
-						LoadAverage: &smgrpc.LoadAverage{Load: uint32(scrape.loadAver)},
-						Cpu:         &smgrpc.Cpu{Sys: uint32(scrape.cpu[0]), User: uint32(scrape.cpu[1]), Idle: uint32(scrape.cpu[2])},
-						Disk:        &smgrpc.Disk{Tps: uint32(scrape.diskLoad[0]), Kbps: uint32(scrape.diskLoad[1])},
+						LoadAverage: &smgrpc.LoadAverage{Load: scrape.loadAver},
+						Cpu:         &smgrpc.Cpu{Sys: scrape.cpu[0], User: scrape.cpu[1], Idle: scrape.cpu[2]},
+						Disk:        &smgrpc.Disk{Tps: scrape.diskLoad[0], Kbps: scrape.diskLoad[1]},
 						Connections: &smgrpc.TcpConnections{Count: 10},
 						Partitions: []*smgrpc.Fs{
 							{Name: "/", Used: 30, Iused: 1},
@@ -213,12 +205,7 @@ func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer
 
 // sys-mon implementation
 func (mst *monStateBuff) Run(doneCh <-chan interface{}, logger *log.Logger) error {
-	agentsMap, err := runAgents(doneCh)
-	if err != nil {
-		logger.Fatal("Run agents error: ", err)
-	}
-
-	err = mst.runAggregate(doneCh, agentsMap, allCh)
+	err := mst.runAggregate(doneCh, allCh, logger)
 	if err != nil {
 		logger.Fatal("Run aggregate error: ", err)
 	}
