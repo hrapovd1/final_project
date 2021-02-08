@@ -86,32 +86,32 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *
 				var wg sync.WaitGroup
 				wg.Add(6)
 				cond.Broadcast()
-				func() {
+				go func() {
 					msg := <-agents["loadAver"]
 					(*mst)[count].loadAver = msg.loadAver
 					wg.Done()
 				}()
-				func() {
+				go func() {
 					msg := <-agents["cpu"]
 					(*mst)[count].cpu = msg.cpu
 					wg.Done()
 				}()
-				func() {
+				go func() {
 					msg := <-agents["diskLoad"]
 					(*mst)[count].diskLoad = msg.diskLoad
 					wg.Done()
 				}()
-				func() {
+				go func() {
 					msg := <-agents["fsUsage"]
 					(*mst)[count].fsUsage = msg.fsUsage
 					wg.Done()
 				}()
-				func() {
+				go func() {
 					msg := <-agents["netListner"]
 					(*mst)[count].netListner = msg.netListner
 					wg.Done()
 				}()
-				func() {
+				go func() {
 					msg := <-agents["netSocks"]
 					(*mst)[count].netSocks = msg.netSocks
 					wg.Done()
