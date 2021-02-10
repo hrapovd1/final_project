@@ -146,12 +146,20 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *
 							ProtoTalkers []*NetProtoTalker `protobuf:"bytes,7,rep,name=protoTalkers,proto3" json:"protoTalkers,omitempty"`
 							RateTalker   []*NetRateTalker  `protobuf:"bytes,8,rep,name=rateTalker,proto3" json:"rateTalker,omitempty"`
 					*/
+					// scrape.diskLoad have zero values:
+					// scrape.diskLoad:	map[nvme0n1:[0 0]]
 					disksCount := len(scrape.diskLoad)
 					disksLoad := make([]*smgrpc.Disk, disksCount)
 					for disk, stats := range scrape.diskLoad {
-						disksLoad[disksCount-1] = &smgrpc.Disk{Name: disk, Tps: stats[0], Kbps: stats[1]}
+						disksLoad[disksCount-1] = &smgrpc.Disk{Name: disk, Tps: float32(stats[0]), Kbps: stats[1]}
 						disksCount--
 					}
+					// but disksLoad don't have zero values and as result client show only disk name, but
+					// when values > 0, this values are being showed
+					// 2021/02/11 01:09:49 scrape.diskLoad:	map[nvme0n1:[0 0]]
+					// 2021/02/11 01:09:49 disksLoad:	name:"nvme0n1"
+					// 2021/02/11 01:09:49 scrape.diskLoad:	map[nvme0n1:[1.8549434 37.09887]]
+					// 2021/02/11 01:09:49 disksLoad:	name:"nvme0n1" tps:1.8549434 kbps:37.09887
 					messages <- &smgrpc.All{
 						LoadAverage: &smgrpc.LoadAverage{Load: scrape.loadAver},
 						Cpu:         &smgrpc.Cpu{Sys: scrape.cpu[0], User: scrape.cpu[1], Idle: scrape.cpu[2]},
