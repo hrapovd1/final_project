@@ -9,14 +9,16 @@ import (
 	"sync"
 )
 
-var cpuStatPrev []uint64 = []uint64{0, 0, 0, 0}
+var cpuStatPrev []uint64 = make([]uint64, 4)
+var diskStatPrev map[string][]uint64 = make(map[string][]uint64, 0)
+var uptimePrev float64 = float64(0)
 
 // Function read /proc/loadavg
 func getLA() (float32, error) {
 	var avg float32 = 0
 	loadavg, err := ioutil.ReadFile("/proc/loadavg")
 	if err != nil {
-		return 0, err
+		return avg, err
 	}
 	fmt.Sscanf(string(loadavg), "%f", &avg)
 	return avg, nil
@@ -60,8 +62,92 @@ func getCpu() ([3]float32, error) {
 	return cpu, nil
 }
 
-func getDiskLoad() ([2]float32, error) {
-	diskLoad := [2]float32{0, 0}
+// tps (transfers per second); KB/s (kilobytes (read+write) per second);
+func getDiskLoad() (map[string][]float32, error) {
+	diskLoad := make(map[string][]float32, 0)
+	diskStatLast := make(map[string][]uint64, 0)
+	uptimeLast := float64(0)
+
+	// find block devices
+	files, err := ioutil.ReadDir("/sys/block")
+	if err != nil {
+		return diskLoad, err
+	}
+	// filter loops
+	for _, item := range files {
+		if !strings.Contains(item.Name(), "loop") {
+			diskStatLast[item.Name()] = make([]uint64, 16)
+		}
+	}
+	// count measure interval acording uptime
+	// This interval count method is got from
+	// https://github.com/sysstat/sysstat/blob/master/iostat.c
+	uptime, err := ioutil.ReadFile("/proc/uptime")
+	if err != nil {
+		return diskLoad, err
+	}
+	valuesStr := strings.Split(strings.Trim(string(uptime), "\n"), " ")
+	valuesFloat1, err := strconv.ParseFloat(valuesStr[0], 64)
+	if err != nil {
+		return diskLoad, err
+	}
+	valuesFloat2, err := strconv.ParseFloat(valuesStr[1], 64)
+	if err != nil {
+		return diskLoad, err
+	}
+	uptimeLast = valuesFloat1 + valuesFloat2/100 //this is coefficient from iostat
+	if uptimePrev == 0 {
+		uptimePrev = uptimeLast - 1
+	}
+	itv := uptimeLast - uptimePrev
+	uptimePrev = uptimeLast
+
+	// get statistics for block devices
+	// This statistics count method is got from
+	// https://github.com/sysstat/sysstat/blob/master/iostat.c
+	diskStats, err := ioutil.ReadFile("/proc/diskstats")
+	if err != nil {
+		return diskLoad, err
+	}
+	/*
+		https://gist.github.com/lesovsky/e150e82d97ad691dbbfd
+		https://github.com/sysstat/sysstat/blob/master/iostat.c
+			   S_VALUE(ioj->rd_ios + ioj->wr_ios + ioj->dc_ios,
+			   ioi->rd_ios + ioi->wr_ios + ioi->dc_ios, itv));
+	*/
+	for _, line := range strings.Split(string(diskStats), "\n") {
+		if len(line) == 0 {
+			continue
+		}
+		fields := strings.Fields(line)
+		if !strings.Contains(fields[2], "loop") {
+			for disk, _ := range diskStatLast {
+				if strings.EqualFold(fields[2], disk) {
+					for i, field := range fields[3:] {
+						fieldUint, err := strconv.ParseUint(field, 10, 64)
+						if err != nil {
+							return diskLoad, err
+						}
+						diskStatLast[disk][i] = fieldUint
+					}
+				}
+			}
+		}
+	}
+	if len(diskStatPrev) == 0 {
+		diskStatPrev = diskStatLast
+		return diskLoad, nil
+	}
+	for disk, _ := range diskStatLast {
+		deltaTps := float64((diskStatLast[disk][0] + diskStatLast[disk][4] + diskStatLast[disk][8]) -
+			(diskStatPrev[disk][0] + diskStatPrev[disk][4] + diskStatPrev[disk][8]))
+		tps := deltaTps / itv
+		deltaKbs := float64((diskStatLast[disk][2] + diskStatLast[disk][6] + diskStatLast[disk][10]) -
+			(diskStatPrev[disk][2] + diskStatPrev[disk][6] + diskStatPrev[disk][10]))
+		kbs := deltaKbs / itv / 2
+		diskLoad[disk] = []float32{float32(tps), float32(kbs)}
+	}
+	diskStatPrev = diskStatLast
 	return diskLoad, nil
 }
 

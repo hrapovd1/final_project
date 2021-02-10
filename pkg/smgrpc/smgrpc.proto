@@ -45,8 +45,9 @@ message Cpu {
 }
 	
 message Disk {
-	float tps = 1;
-	float kbps = 2;
+	string name =1;
+	float tps = 2;
+	float kbps = 3;
 }
 	
 message TcpConnections {
@@ -59,7 +60,7 @@ message All {
 	
 	Cpu cpu = 2;
 	
-	Disk disk = 3;
+	repeated Disk disk = 3;
 	
 	repeated Fs partitions = 4;
 	

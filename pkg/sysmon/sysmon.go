@@ -36,7 +36,7 @@ type listner struct {
 type monState struct {
 	loadAver   float32
 	cpu        [3]float32
-	diskLoad   [2]float32
+	diskLoad   map[string][]float32
 	fsUsage    map[string][2]float32
 	netListner listner
 	netSocks   uint
@@ -132,28 +132,33 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *
 			case <-answer.C:
 				for _, scrape := range *mst {
 					/*
-					   type All struct {
-					   	state         protoimpl.MessageState
-					   	sizeCache     protoimpl.SizeCache
-					   	unknownFields protoimpl.UnknownFields
+						    type All struct {
+						   	state         protoimpl.MessageState
+							sizeCache     protoimpl.SizeCache
+							unknownFields protoimpl.UnknownFields
 
-					   	LoadAverage  *LoadAverage      `protobuf:"bytes,1,opt,name=loadAverage,proto3" json:"loadAverage,omitempty"`
-					   	Cpu          *Cpu              `protobuf:"bytes,2,opt,name=cpu,proto3" json:"cpu,omitempty"`
-					   	Disk         *Disk             `protobuf:"bytes,3,opt,name=disk,proto3" json:"disk,omitempty"`
-					   	Partitions   []*Fs             `protobuf:"bytes,4,rep,name=partitions,proto3" json:"partitions,omitempty"`
-					   	Connections  *TcpConnections   `protobuf:"bytes,5,opt,name=connections,proto3" json:"connections,omitempty"`
-					   	Listners     []*Listen         `protobuf:"bytes,6,rep,name=listners,proto3" json:"listners,omitempty"`
-					   	ProtoTalkers []*NetProtoTalker `protobuf:"bytes,7,rep,name=protoTalkers,proto3" json:"protoTalkers,omitempty"`
-					   	RateTalker   []*NetRateTalker  `protobuf:"bytes,8,rep,name=rateTalker,proto3" json:"rateTalker,omitempty"`
-					   }
+							LoadAverage  *LoadAverage      `protobuf:"bytes,1,opt,name=loadAverage,proto3" json:"loadAverage,omitempty"`
+							Cpu          *Cpu              `protobuf:"bytes,2,opt,name=cpu,proto3" json:"cpu,omitempty"`
+							Disk         []*Disk           `protobuf:"bytes,3,rep,name=disk,proto3" json:"disk,omitempty"`
+							Partitions   []*Fs             `protobuf:"bytes,4,rep,name=partitions,proto3" json:"partitions,omitempty"`
+							Connections  *TcpConnections   `protobuf:"bytes,5,opt,name=connections,proto3" json:"connections,omitempty"`
+							Listners     []*Listen         `protobuf:"bytes,6,rep,name=listners,proto3" json:"listners,omitempty"`
+							ProtoTalkers []*NetProtoTalker `protobuf:"bytes,7,rep,name=protoTalkers,proto3" json:"protoTalkers,omitempty"`
+							RateTalker   []*NetRateTalker  `protobuf:"bytes,8,rep,name=rateTalker,proto3" json:"rateTalker,omitempty"`
 					*/
+					disksCount := len(scrape.diskLoad)
+					disksLoad := make([]*smgrpc.Disk, disksCount)
+					for disk, stats := range scrape.diskLoad {
+						disksLoad[disksCount-1] = &smgrpc.Disk{Name: disk, Tps: stats[0], Kbps: stats[1]}
+						disksCount--
+					}
 					messages <- &smgrpc.All{
 						LoadAverage: &smgrpc.LoadAverage{Load: scrape.loadAver},
 						Cpu:         &smgrpc.Cpu{Sys: scrape.cpu[0], User: scrape.cpu[1], Idle: scrape.cpu[2]},
-						Disk:        &smgrpc.Disk{Tps: scrape.diskLoad[0], Kbps: scrape.diskLoad[1]},
+						Disk:        disksLoad,
 						Connections: &smgrpc.TcpConnections{Count: 10},
 						Partitions: []*smgrpc.Fs{
-							{Name: "/", Used: 30, Iused: 1},
+							{Name: "/", Used: 30, Iused: 0},
 							{Name: "/home", Used: 10, Iused: 5},
 						},
 						Listners: []*smgrpc.Listen{
