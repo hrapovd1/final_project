@@ -3,6 +3,7 @@ package sysmon
 import (
 	"fmt"
 	"log"
+	"math"
 	"net"
 	"strconv"
 	"sync"
@@ -37,7 +38,7 @@ type monState struct {
 	loadAver   float32
 	cpu        [3]float32
 	diskLoad   map[string][]float32
-	fsUsage    map[string][2]float32
+	fsUsage    map[string][2]float64
 	netListner listner
 	netSocks   uint
 }
@@ -160,15 +161,18 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *
 					// 2021/02/11 01:09:49 disksLoad:	name:"nvme0n1"
 					// 2021/02/11 01:09:49 scrape.diskLoad:	map[nvme0n1:[1.8549434 37.09887]]
 					// 2021/02/11 01:09:49 disksLoad:	name:"nvme0n1" tps:1.8549434 kbps:37.09887
+					fssCount := len(scrape.fsUsage)
+					fsUsage := make([]*smgrpc.Fs, fssCount)
+					for fsPath, usage := range scrape.fsUsage {
+						fsUsage[fssCount-1] = &smgrpc.Fs{Name: fsPath, Used: float32(math.Round(usage[0])), Iused: float32(math.Round(usage[1]))}
+						fssCount--
+					}
 					messages <- &smgrpc.All{
 						LoadAverage: &smgrpc.LoadAverage{Load: scrape.loadAver},
 						Cpu:         &smgrpc.Cpu{Sys: scrape.cpu[0], User: scrape.cpu[1], Idle: scrape.cpu[2]},
 						Disk:        disksLoad,
 						Connections: &smgrpc.TcpConnections{Count: 10},
-						Partitions: []*smgrpc.Fs{
-							{Name: "/", Used: 30, Iused: 0},
-							{Name: "/home", Used: 10, Iused: 5},
-						},
+						Partitions:  fsUsage,
 						Listners: []*smgrpc.Listen{
 							{Cmd: "bind", User: "nobody", Pid: 456, Proto: "Tcp", Port: 53},
 							{Cmd: "sys-mon", User: "dima", Pid: 7654, Proto: "Tcp", Port: 8080},

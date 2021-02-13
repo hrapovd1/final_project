@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
+	"syscall"
 )
 
 var cpuStatPrev []uint64 = make([]uint64, 4)
@@ -151,8 +153,60 @@ func getDiskLoad() (map[string][]float32, error) {
 	return diskLoad, nil
 }
 
-func getFsUsage() (map[string][2]float32, error) {
-	fsUsage := map[string][2]float32{"/": {0, 0}}
+func getFsUsage() (map[string][2]float64, error) {
+	fsUsage := map[string][2]float64{"": {0, 0}}
+	fsPaths := make([]string, 0)
+	fsFinder, err := regexp.Compile(`^/[^\s].*`)
+	if err != nil {
+		return fsUsage, err
+	}
+
+	// get mounted fss
+	lines, err := ioutil.ReadFile("/proc/mounts")
+	if err != nil {
+		return fsUsage, err
+	}
+	// filter loops
+	for _, line := range strings.Split(string(lines), "\n") {
+		if len(line) == 0 || strings.Contains(line, "loop") {
+			continue
+		}
+		if fsFinder.MatchString(line) {
+			fields := strings.Fields(line)
+			fsPaths = append(fsPaths, fields[1])
+		}
+	}
+
+	fsUsage = make(map[string][2]float64, len(fsPaths))
+
+	// This count way is brought from
+	// https://github.com/google/cadvisor/blob/57a2c804a08755a29e44afa26b4b8e60add4e420/fs/fs.go#L647
+	for _, path := range fsPaths {
+		var s syscall.Statfs_t
+		var usage float64
+		var iusage float64
+		err := syscall.Statfs(path, &s)
+		if err != nil {
+			return fsUsage, err
+		}
+
+		total := float64(uint64(s.Frsize) * s.Blocks)
+		avail := float64(uint64(s.Frsize) * s.Bavail)
+		inodes := float64(s.Files)
+		inodesFree := float64(s.Ffree)
+
+		if total > 0 {
+			usage = (1 - avail/total) * 100
+		} else {
+			usage = 0
+		}
+		if inodes > 0 {
+			iusage = (1 - inodesFree/inodes) * 100
+		} else {
+			iusage = 0
+		}
+		fsUsage[path] = [...]float64{usage, iusage}
+	}
 	return fsUsage, nil
 }
 
