@@ -230,7 +230,7 @@ func getNetSocks() (uint, error) {
 	return netSocks, nil
 }
 
-func runAgents(doneCh <-chan interface{}, cond *sync.Cond, logger *log.Logger) (map[string]chan monState, error) {
+func runAgents(doneCh <-chan interface{}, cond *sync.Cond, logger *log.Logger) map[string]chan monState {
 	// difine chanels betwen agent and agregator.
 	agents := make(map[string]chan monState)
 	agents["loadAver"] = make(chan monState)
@@ -360,5 +360,5 @@ func runAgents(doneCh <-chan interface{}, cond *sync.Cond, logger *log.Logger) (
 		close(agents["netSocks"])
 		return
 	}()
-	return agents, nil
+	return agents
 }

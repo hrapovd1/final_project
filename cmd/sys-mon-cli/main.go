@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	smgrpc "github.com/hrapovd1/final_project/pkg/smgrpc"
@@ -10,7 +9,6 @@ import (
 )
 
 func main() {
-
 	conn, _ := grpc.Dial("127.0.0.1:8080", grpc.WithInsecure())
 
 	client := smgrpc.NewStatClient(conn)
@@ -37,6 +35,6 @@ func main() {
 		if err != nil {
 			log.Fatalf("when read message, got: %v", err)
 		}
-		fmt.Printf(" - \n%v\n", msg)
+		log.Printf(" - \n%v\n", msg)
 	}
 }

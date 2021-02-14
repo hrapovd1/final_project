@@ -30,10 +30,7 @@ func main() {
 
 	// Create and run sys-mon
 	monInstance := sysmon.NewSysmon(*dataBuff, *answPeriod, *port)
-	err := monInstance.Run(doneCh, stdoutLog)
-	if err != nil {
-		stdoutLog.Printf("ERROR: %v", err)
-	}
+	monInstance.Run(doneCh, stdoutLog)
 
 	// Wait stop signal
 	<-sysSigCh

@@ -47,7 +47,7 @@ type monStateBuff []monState
 
 // System monitoring process
 type Sysmon interface {
-	Run(doneCh <-chan interface{}, logger *log.Logger) error
+	Run(doneCh <-chan interface{}, logger *log.Logger)
 }
 
 // System monitoring constructor
@@ -63,17 +63,14 @@ func NewSysmon(dataBuff, answPeriod, port uint) Sysmon {
 }
 
 // aggregate data from agents and sent "All" messages in grpc
-func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *smgrpc.All, logger *log.Logger) error {
+func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *smgrpc.All, logger *log.Logger) {
 	count := 0
 	answer := time.NewTicker(time.Duration(smState.answPeriod) * time.Second)
 	second := time.NewTicker(time.Second)
 	condMu := new(sync.Mutex)
 	cond := sync.NewCond(condMu)
 
-	agents, err := runAgents(doneCh, cond, logger) //Function defined in agents.go file
-	if err != nil {
-		logger.Fatal("Run agents error: ", err)
-	}
+	agents := runAgents(doneCh, cond, logger) //Function defined in agents.go file
 
 	// ask agents every second
 	go func() {
@@ -132,39 +129,16 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *
 			select {
 			case <-answer.C:
 				for _, scrape := range *mst {
-					/*
-						    type All struct {
-						   	state         protoimpl.MessageState
-							sizeCache     protoimpl.SizeCache
-							unknownFields protoimpl.UnknownFields
-
-							LoadAverage  *LoadAverage      `protobuf:"bytes,1,opt,name=loadAverage,proto3" json:"loadAverage,omitempty"`
-							Cpu          *Cpu              `protobuf:"bytes,2,opt,name=cpu,proto3" json:"cpu,omitempty"`
-							Disk         []*Disk           `protobuf:"bytes,3,rep,name=disk,proto3" json:"disk,omitempty"`
-							Partitions   []*Fs             `protobuf:"bytes,4,rep,name=partitions,proto3" json:"partitions,omitempty"`
-							Connections  *TcpConnections   `protobuf:"bytes,5,opt,name=connections,proto3" json:"connections,omitempty"`
-							Listners     []*Listen         `protobuf:"bytes,6,rep,name=listners,proto3" json:"listners,omitempty"`
-							ProtoTalkers []*NetProtoTalker `protobuf:"bytes,7,rep,name=protoTalkers,proto3" json:"protoTalkers,omitempty"`
-							RateTalker   []*NetRateTalker  `protobuf:"bytes,8,rep,name=rateTalker,proto3" json:"rateTalker,omitempty"`
-					*/
-					// scrape.diskLoad have zero values:
-					// scrape.diskLoad:	map[nvme0n1:[0 0]]
 					disksCount := len(scrape.diskLoad)
 					disksLoad := make([]*smgrpc.Disk, disksCount)
 					for disk, stats := range scrape.diskLoad {
-						disksLoad[disksCount-1] = &smgrpc.Disk{Name: disk, Tps: float32(stats[0]), Kbps: stats[1]}
+						disksLoad[disksCount-1] = &smgrpc.Disk{Name: disk, Tps: float32(math.Round(float64(stats[0])*100) / 100), Kbps: float32(math.Round(float64(stats[1])*100) / 100)}
 						disksCount--
 					}
-					// but disksLoad don't have zero values and as result client show only disk name, but
-					// when values > 0, this values are being showed
-					// 2021/02/11 01:09:49 scrape.diskLoad:	map[nvme0n1:[0 0]]
-					// 2021/02/11 01:09:49 disksLoad:	name:"nvme0n1"
-					// 2021/02/11 01:09:49 scrape.diskLoad:	map[nvme0n1:[1.8549434 37.09887]]
-					// 2021/02/11 01:09:49 disksLoad:	name:"nvme0n1" tps:1.8549434 kbps:37.09887
 					fssCount := len(scrape.fsUsage)
 					fsUsage := make([]*smgrpc.Fs, fssCount)
 					for fsPath, usage := range scrape.fsUsage {
-						fsUsage[fssCount-1] = &smgrpc.Fs{Name: fsPath, Used: float32(math.Round(usage[0])), Iused: float32(math.Round(usage[1]))}
+						fsUsage[fssCount-1] = &smgrpc.Fs{Name: fsPath, Used: float32(math.Round(usage[0]*100) / 100), Iused: float32(math.Round(usage[1]*100) / 100)}
 						fssCount--
 					}
 					messages <- &smgrpc.All{
@@ -194,7 +168,6 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *
 			}
 		}
 	}()
-	return nil
 }
 
 // grpc server implementation
@@ -221,11 +194,8 @@ func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer
 }
 
 // sys-mon implementation
-func (mst *monStateBuff) Run(doneCh <-chan interface{}, logger *log.Logger) error {
-	err := mst.runAggregate(doneCh, allCh, logger)
-	if err != nil {
-		logger.Fatal("Run aggregate error: ", err)
-	}
+func (mst *monStateBuff) Run(doneCh <-chan interface{}, logger *log.Logger) {
+	mst.runAggregate(doneCh, allCh, logger)
 
 	srvSock := ":" + strconv.Itoa(int(smState.port))
 	lsn, err := net.Listen("tcp", srvSock)
@@ -250,6 +220,4 @@ func (mst *monStateBuff) Run(doneCh <-chan interface{}, logger *log.Logger) erro
 		server.Stop()
 		lsn.Close()
 	}()
-
-	return nil
 }
