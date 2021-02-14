@@ -579,7 +579,7 @@ type All struct {
 	Disk         []*Disk           `protobuf:"bytes,3,rep,name=disk,proto3" json:"disk"`
 	Partitions   []*Fs             `protobuf:"bytes,4,rep,name=partitions,proto3" json:"partitions"`
 	Connections  *TcpConnections   `protobuf:"bytes,5,opt,name=connections,proto3" json:"connections"`
-	Listners     []*Listen         `protobuf:"bytes,6,rep,name=listners,proto3" json:"listners"`
+	Listeners    []*Listen         `protobuf:"bytes,6,rep,name=listners,proto3" json:"listners"`
 	ProtoTalkers []*NetProtoTalker `protobuf:"bytes,7,rep,name=protoTalkers,proto3" json:"protoTalkers"`
 	RateTalker   []*NetRateTalker  `protobuf:"bytes,8,rep,name=rateTalker,proto3" json:"rateTalker"`
 }
@@ -653,7 +653,7 @@ func (x *All) GetConnections() *TcpConnections {
 
 func (x *All) GetListners() []*Listen {
 	if x != nil {
-		return x.Listners
+		return x.Listeners
 	}
 	return nil
 }

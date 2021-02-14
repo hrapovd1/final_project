@@ -1,7 +1,6 @@
 package sysmon
 
 import (
-	"fmt"
 	"log"
 	"math"
 	"net"
@@ -10,12 +9,11 @@ import (
 	"time"
 
 	smgrpc "github.com/hrapovd1/final_project/pkg/smgrpc"
-	//smgrpc "../smgrpc"
 	grpc "google.golang.org/grpc"
 	metadata "google.golang.org/grpc/metadata"
 )
 
-// Internal state of sys-mon process
+// Internal state of sys-mon process.
 type sysmonState struct {
 	port       uint
 	dataBuff   uint
@@ -24,16 +22,18 @@ type sysmonState struct {
 
 var smState *sysmonState
 
-// Type for store OS network listner
+// Type for store OS network listner.
 type listner struct {
-	cmd   string
-	pid   uint
-	user  string
-	proto uint
-	port  uint
+	/*
+		cmd   string
+		pid   uint
+		user  string
+		proto uint
+		port  uint
+	*/
 }
 
-// Type for store monitoring data scrape
+// Type for store monitoring data scrape.
 type monState struct {
 	loadAver   float32
 	cpu        [3]float32
@@ -45,12 +45,12 @@ type monState struct {
 
 type monStateBuff []monState
 
-// System monitoring process
+// System monitoring process.
 type Sysmon interface {
 	Run(doneCh <-chan interface{}, logger *log.Logger)
 }
 
-// System monitoring constructor
+// System monitoring constructor.
 func NewSysmon(dataBuff, answPeriod, port uint) Sysmon {
 	smState = &sysmonState{
 		port:       port,
@@ -62,7 +62,7 @@ func NewSysmon(dataBuff, answPeriod, port uint) Sysmon {
 	return &smBuff
 }
 
-// aggregate data from agents and sent "All" messages in grpc
+// aggregate data from agents and sent "All" messages in grpc.
 func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *smgrpc.All, logger *log.Logger) {
 	count := 0
 	answer := time.NewTicker(time.Duration(smState.answPeriod) * time.Second)
@@ -70,7 +70,7 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *
 	condMu := new(sync.Mutex)
 	cond := sync.NewCond(condMu)
 
-	agents := runAgents(doneCh, cond, logger) //Function defined in agents.go file
+	agents := runAgents(doneCh, cond, logger) // Function defined in agents.go file
 
 	// ask agents every second
 	go func() {
@@ -147,7 +147,7 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *
 						Disk:        disksLoad,
 						Connections: &smgrpc.TcpConnections{Count: 10},
 						Partitions:  fsUsage,
-						Listners: []*smgrpc.Listen{
+						Listeners: []*smgrpc.Listen{
 							{Cmd: "bind", User: "nobody", Pid: 456, Proto: "Tcp", Port: 53},
 							{Cmd: "sys-mon", User: "dima", Pid: 7654, Proto: "Tcp", Port: 8080},
 						},
@@ -170,19 +170,20 @@ func (mst *monStateBuff) runAggregate(doneCh <-chan interface{}, messages chan *
 	}()
 }
 
-// grpc server implementation
+// grpc server implementation.
 type statServer struct {
 	smgrpc.UnimplementedStatServer
 }
 
-// chanel for send scrapes
+// chanel for send scrapes.
 var allCh = make(chan *smgrpc.All)
 
 func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer) error {
 	header := metadata.New(map[string]string{"application": "System monitoring", "timestamp": time.Now().String()})
-	out.SendHeader(header)
-
-	fmt.Printf("request received: %v\n", query)
+	err := out.SendHeader(header)
+	if err != nil {
+		return err
+	}
 
 	for msg := range allCh {
 		err := out.Send(msg)
@@ -193,7 +194,7 @@ func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer
 	return nil
 }
 
-// sys-mon implementation
+// sys-mon implementation.
 func (mst *monStateBuff) Run(doneCh <-chan interface{}, logger *log.Logger) {
 	mst.runAggregate(doneCh, allCh, logger)
 
@@ -218,6 +219,5 @@ func (mst *monStateBuff) Run(doneCh <-chan interface{}, logger *log.Logger) {
 	go func() {
 		<-doneCh
 		server.Stop()
-		lsn.Close()
 	}()
 }

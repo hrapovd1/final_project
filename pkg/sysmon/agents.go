@@ -12,10 +12,10 @@ import (
 )
 
 var cpuStatPrev []uint64 = make([]uint64, 4)
-var diskStatPrev map[string][]uint64 = make(map[string][]uint64, 0)
+var diskStatPrev map[string][]uint64 = make(map[string][]uint64)
 var uptimePrev float64 = float64(0)
 
-// Function read /proc/loadavg
+// Function read /proc/loadavg.
 func getLA() (float32, error) {
 	var avg float32 = 0
 	loadavg, err := ioutil.ReadFile("/proc/loadavg")
@@ -26,7 +26,7 @@ func getLA() (float32, error) {
 	return avg, nil
 }
 
-func getCpu() ([3]float32, error) {
+func getCPU() ([3]float32, error) {
 	cpuStatLast := make([]uint64, 4)
 	cpuStatDelta := make([]uint64, 4)
 	cpuStatFields := make([]uint64, 3)
@@ -49,7 +49,7 @@ func getCpu() ([3]float32, error) {
 		_ = copy(cpuStatPrev, cpuStatLast)
 		return cpu, nil
 	}
-	for i, _ := range cpuStatLast {
+	for i := range cpuStatLast {
 		cpuStatDelta[i] = cpuStatLast[i] - cpuStatPrev[i]
 	}
 	for _, val := range cpuStatDelta {
@@ -64,10 +64,10 @@ func getCpu() ([3]float32, error) {
 	return cpu, nil
 }
 
-// tps (transfers per second); KB/s (kilobytes (read+write) per second);
+// tps (transfers per second); KB/s (kilobytes (read+write) per second).
 func getDiskLoad() (map[string][]float32, error) {
-	diskLoad := make(map[string][]float32, 0)
-	diskStatLast := make(map[string][]uint64, 0)
+	diskLoad := make(map[string][]float32)
+	diskStatLast := make(map[string][]uint64)
 	uptimeLast := float64(0)
 
 	// find block devices
@@ -81,7 +81,7 @@ func getDiskLoad() (map[string][]float32, error) {
 			diskStatLast[item.Name()] = make([]uint64, 16)
 		}
 	}
-	// count measure interval acording uptime
+	// count measure interval according uptime
 	// This interval count method is got from
 	// https://github.com/sysstat/sysstat/blob/master/iostat.c
 	uptime, err := ioutil.ReadFile("/proc/uptime")
@@ -97,7 +97,7 @@ func getDiskLoad() (map[string][]float32, error) {
 	if err != nil {
 		return diskLoad, err
 	}
-	uptimeLast = valuesFloat1 + valuesFloat2/100 //this is coefficient from iostat
+	uptimeLast = valuesFloat1 + valuesFloat2/100 // this is coefficient from iostat
 	if uptimePrev == 0 {
 		uptimePrev = uptimeLast - 1
 	}
@@ -123,7 +123,7 @@ func getDiskLoad() (map[string][]float32, error) {
 		}
 		fields := strings.Fields(line)
 		if !strings.Contains(fields[2], "loop") {
-			for disk, _ := range diskStatLast {
+			for disk := range diskStatLast {
 				if strings.EqualFold(fields[2], disk) {
 					for i, field := range fields[3:] {
 						fieldUint, err := strconv.ParseUint(field, 10, 64)
@@ -140,7 +140,7 @@ func getDiskLoad() (map[string][]float32, error) {
 		diskStatPrev = diskStatLast
 		return diskLoad, nil
 	}
-	for disk, _ := range diskStatLast {
+	for disk := range diskStatLast {
 		deltaTps := float64((diskStatLast[disk][0] + diskStatLast[disk][4] + diskStatLast[disk][8]) -
 			(diskStatPrev[disk][0] + diskStatPrev[disk][4] + diskStatPrev[disk][8]))
 		tps := deltaTps / itv
@@ -156,10 +156,7 @@ func getDiskLoad() (map[string][]float32, error) {
 func getFsUsage() (map[string][2]float64, error) {
 	fsUsage := map[string][2]float64{"": {0, 0}}
 	fsPaths := make([]string, 0)
-	fsFinder, err := regexp.Compile(`^/[^\s].*`)
-	if err != nil {
-		return fsUsage, err
-	}
+	fsFinder := regexp.MustCompile(`^/[^\s].*`)
 
 	// get mounted fss
 	lines, err := ioutil.ReadFile("/proc/mounts")
@@ -231,7 +228,7 @@ func getNetSocks() (uint, error) {
 }
 
 func runAgents(doneCh <-chan interface{}, cond *sync.Cond, logger *log.Logger) map[string]chan monState {
-	// difine chanels betwen agent and agregator.
+	// difine chanels between agent and agregator.
 	agents := make(map[string]chan monState)
 	agents["loadAver"] = make(chan monState)
 	agents["cpu"] = make(chan monState)
@@ -239,7 +236,7 @@ func runAgents(doneCh <-chan interface{}, cond *sync.Cond, logger *log.Logger) m
 	agents["fsUsage"] = make(chan monState)
 	agents["netListner"] = make(chan monState)
 	agents["netSocks"] = make(chan monState)
-	//difine agents.
+	// difine agents.
 	var wg sync.WaitGroup
 	wg.Add(6)
 	go func() {
@@ -267,7 +264,7 @@ func runAgents(doneCh <-chan interface{}, cond *sync.Cond, logger *log.Logger) m
 				cond.L.Lock()
 				cond.Wait()
 				cond.L.Unlock()
-				out, err := getCpu()
+				out, err := getCPU()
 				if err != nil {
 					logger.Printf("ERROR cpu agent: %v", err)
 				}
@@ -358,7 +355,6 @@ func runAgents(doneCh <-chan interface{}, cond *sync.Cond, logger *log.Logger) m
 		close(agents["fsUsage"])
 		close(agents["netListner"])
 		close(agents["netSocks"])
-		return
 	}()
 	return agents
 }
