@@ -23,6 +23,7 @@ env:
 before_install:
   - echo "current branch is ${BRANCH}"
   - if [ "${BRANCH}" == "master" ]; then travis_terminate 0; fi
+  - if [ "${BRANCH}" == "v0.2" ]; then travis_terminate 0; fi
   - ls ${BRANCH} && cd ${BRANCH}
 
 stages:

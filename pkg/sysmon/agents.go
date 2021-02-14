@@ -26,6 +26,28 @@ func getLA() (float32, error) {
 	return avg, nil
 }
 
+func (mst *monStateBuff) fillLA(doneCh <-chan interface{}, cond *sync.Cond, count *int, logger *log.Logger) {
+	for {
+		select {
+		default:
+			cond.L.Lock()
+			cond.Wait()
+			out, err := getLA()
+			if err != nil {
+				logger.Printf("ERROR loadAverage agent: %v", err)
+			}
+			mst.mu.Lock()
+			(mst.buff)[*count].loadAver = out
+			mst.mu.Unlock()
+			cond.L.Unlock()
+
+		case <-doneCh:
+			break
+		}
+	}
+}
+
+// Functions read and process /proc/stat.
 func getCPU() ([3]float32, error) {
 	cpuStatLast := make([]uint64, 4)
 	cpuStatDelta := make([]uint64, 4)
@@ -62,6 +84,27 @@ func getCPU() ([3]float32, error) {
 		cpu[i] = float32(field) * 100 / float32(cpuSumm)
 	}
 	return cpu, nil
+}
+
+func (mst *monStateBuff) fillCPU(doneCh <-chan interface{}, cond *sync.Cond, count *int, logger *log.Logger) {
+	for {
+		select {
+		default:
+			cond.L.Lock()
+			cond.Wait()
+			// getCPU defined in agents.go
+			out, err := getCPU()
+			if err != nil {
+				logger.Printf("ERROR cpu agent: %v", err)
+			}
+			mst.mu.Lock()
+			(mst.buff)[*count].cpu = out
+			mst.mu.Unlock()
+			cond.L.Unlock()
+		case <-doneCh:
+			break
+		}
+	}
 }
 
 // tps (transfers per second); KB/s (kilobytes (read+write) per second).
@@ -104,9 +147,11 @@ func getDiskLoad() (map[string][]float32, error) {
 	itv := uptimeLast - uptimePrev
 	uptimePrev = uptimeLast
 
-	// get statistics for block devices
-	// This statistics count method is got from
-	// https://github.com/sysstat/sysstat/blob/master/iostat.c
+	/*
+		get statistics for block devices
+		This statistics count method is got from
+		https://github.com/sysstat/sysstat/blob/master/iostat.c
+	*/
 	diskStats, err := ioutil.ReadFile("/proc/diskstats")
 	if err != nil {
 		return diskLoad, err
@@ -151,6 +196,27 @@ func getDiskLoad() (map[string][]float32, error) {
 	}
 	diskStatPrev = diskStatLast
 	return diskLoad, nil
+}
+
+func (mst *monStateBuff) fillDiskLoad(doneCh <-chan interface{}, cond *sync.Cond, count *int, logger *log.Logger) {
+	for {
+		select {
+		default:
+			cond.L.Lock()
+			cond.Wait()
+			// getDiskLoad defined in agents.go
+			out, err := getDiskLoad()
+			if err != nil {
+				logger.Printf("ERROR diskLoad agent: %v", err)
+			}
+			mst.mu.Lock()
+			(mst.buff)[*count].diskLoad = out
+			mst.mu.Unlock()
+			cond.L.Unlock()
+		case <-doneCh:
+			break
+		}
+	}
 }
 
 func getFsUsage() (map[string][2]float64, error) {
@@ -207,6 +273,27 @@ func getFsUsage() (map[string][2]float64, error) {
 	return fsUsage, nil
 }
 
+func (mst *monStateBuff) fillFsUsage(doneCh <-chan interface{}, cond *sync.Cond, count *int, logger *log.Logger) {
+	for {
+		select {
+		default:
+			cond.L.Lock()
+			cond.Wait()
+			// getFsUsage defined in agents.go
+			out, err := getFsUsage()
+			if err != nil {
+				logger.Printf("ERROR fsUsage agent: %v", err)
+			}
+			mst.mu.Lock()
+			(mst.buff)[*count].fsUsage = out
+			mst.mu.Unlock()
+			cond.L.Unlock()
+		case <-doneCh:
+			break
+		}
+	}
+}
+
 /*
    // Type for store OS network listner
    type listner struct {
@@ -217,144 +304,56 @@ func getFsUsage() (map[string][2]float64, error) {
    	port  uint
    }
 */
+// dummy function.
 func getNetListner() (listner, error) {
 	netListner := new(listner)
 	return *netListner, nil
 }
 
+func (mst *monStateBuff) fillNetListner(doneCh <-chan interface{}, cond *sync.Cond, count *int, logger *log.Logger) {
+	for {
+		select {
+		default:
+			cond.L.Lock()
+			cond.Wait()
+			// getNetListner defined in agents.go
+			out, err := getNetListner()
+			if err != nil {
+				logger.Printf("ERROR netListner agent: %v", err)
+			}
+			mst.mu.Lock()
+			(mst.buff)[*count].netListner = out
+			mst.mu.Unlock()
+			cond.L.Unlock()
+		case <-doneCh:
+			break
+		}
+	}
+}
+
+// dummy function.
 func getNetSocks() (uint, error) {
 	var netSocks uint = 0
 	return netSocks, nil
 }
 
-func runAgents(doneCh <-chan interface{}, cond *sync.Cond, logger *log.Logger) map[string]chan monState {
-	// difine chanels between agent and agregator.
-	agents := make(map[string]chan monState)
-	agents["loadAver"] = make(chan monState)
-	agents["cpu"] = make(chan monState)
-	agents["diskLoad"] = make(chan monState)
-	agents["fsUsage"] = make(chan monState)
-	agents["netListner"] = make(chan monState)
-	agents["netSocks"] = make(chan monState)
-	// difine agents.
-	var wg sync.WaitGroup
-	wg.Add(6)
-	go func() {
-		for {
-			select {
-			default:
-				cond.L.Lock()
-				cond.Wait()
-				cond.L.Unlock()
-				out, err := getLA()
-				if err != nil {
-					logger.Printf("ERROR loadAverage agent: %v", err)
-				}
-				agents["loadAver"] <- monState{loadAver: out}
-			case <-doneCh:
-				wg.Done()
-				return
+func (mst *monStateBuff) fillNetSocks(doneCh <-chan interface{}, cond *sync.Cond, count *int, logger *log.Logger) {
+	for {
+		select {
+		default:
+			cond.L.Lock()
+			cond.Wait()
+			// getNetSocks defined in agents.go
+			out, err := getNetSocks()
+			if err != nil {
+				logger.Printf("ERROR netSocks agent: %v", err)
 			}
+			mst.mu.Lock()
+			(mst.buff)[*count].netSocks = out
+			mst.mu.Unlock()
+			cond.L.Unlock()
+		case <-doneCh:
+			break
 		}
-	}()
-	go func() {
-		for {
-			select {
-			default:
-				cond.L.Lock()
-				cond.Wait()
-				cond.L.Unlock()
-				out, err := getCPU()
-				if err != nil {
-					logger.Printf("ERROR cpu agent: %v", err)
-				}
-				agents["cpu"] <- monState{cpu: out}
-			case <-doneCh:
-				wg.Done()
-				return
-			}
-		}
-	}()
-	go func() {
-		for {
-			select {
-			default:
-				cond.L.Lock()
-				cond.Wait()
-				cond.L.Unlock()
-				out, err := getDiskLoad()
-				if err != nil {
-					logger.Printf("ERROR diskLoad agent: %v", err)
-				}
-				agents["diskLoad"] <- monState{diskLoad: out}
-			case <-doneCh:
-				wg.Done()
-				return
-			}
-		}
-	}()
-	go func() {
-		for {
-			select {
-			default:
-				cond.L.Lock()
-				cond.Wait()
-				cond.L.Unlock()
-				out, err := getFsUsage()
-				if err != nil {
-					logger.Printf("ERROR fsUsage agent: %v", err)
-				}
-				agents["fsUsage"] <- monState{fsUsage: out}
-			case <-doneCh:
-				wg.Done()
-				return
-			}
-		}
-	}()
-	go func() {
-		for {
-			select {
-			default:
-				cond.L.Lock()
-				cond.Wait()
-				cond.L.Unlock()
-				out, err := getNetListner()
-				if err != nil {
-					logger.Printf("ERROR netListner agent: %v", err)
-				}
-				agents["netListner"] <- monState{netListner: out}
-			case <-doneCh:
-				wg.Done()
-				return
-			}
-		}
-	}()
-	go func() {
-		for {
-			select {
-			default:
-				cond.L.Lock()
-				cond.Wait()
-				cond.L.Unlock()
-				out, err := getNetSocks()
-				if err != nil {
-					logger.Printf("ERROR netSocks agent: %v", err)
-				}
-				agents["netSocks"] <- monState{netSocks: out}
-			case <-doneCh:
-				wg.Done()
-				return
-			}
-		}
-	}()
-	go func() {
-		wg.Wait()
-		close(agents["loadAver"])
-		close(agents["cpu"])
-		close(agents["diskLoad"])
-		close(agents["fsUsage"])
-		close(agents["netListner"])
-		close(agents["netSocks"])
-	}()
-	return agents
+	}
 }
