@@ -118,7 +118,7 @@ func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer
 	}
 
 	for {
-		msg := make([]smgrpc.All, smState.answPeriod)
+		msg := make([]smgrpc.All, len(sS.monBuff.buff))
 		for i := range msg {
 			// loop for fill All message from monitoring buffer.
 			scrape := sS.monBuff.buff[i]

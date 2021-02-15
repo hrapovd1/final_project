@@ -1,19 +1,27 @@
+.DEFAULT_GOAL := help
+UID := $(shell id -u)
+help:
+	@echo "Сборка docker image сервера:\n\tmake docker\nСборка сервера и клиента в текущем окружении:\n\tmake all"
+
 all: buildsrv buildcli
 
-buildsrv: 
-  @ if -z ${`docker images -q go:1.15`} ; then \
-    docker build -f Dockerfile --tag go:1.15 --target builder .; \
-  fi
-  docker run --rm -v $(pwd):/home/go/project \
-             -w /home/go --user 1000:1000 \
-             --env GOPATH=/home/go --env GOCACHE=/home/go/gocache golang:1.15 \
-             go build -race -ldflags "-s -w" -o bin/sys-mon cmd/sys-mon/main.go
+docker: 
+	docker build -f Dockerfile --tag sys-mon:v0.2 .
             
+buildsrv:
+	docker run --rm -v $$(pwd):/go/project \
+	           --env GOPATH=/go \
+		   --workdir /go/project \
+		   golang:1.15 \
+        go build -o ./bin/sys-mon ./cmd/sys-mon/
+	docker run --rm -v $$(pwd):/sys-mon golang:1.15 \
+	           chown $(UID):$(UID) /sys-mon/bin/sys-mon
+
 buildcli:
-  @ if -z ${`docker images -q go:1.15`} ; then \
-    docker build -f Dockerfile --tag go:1.15 --target builder .; \
-  fi
-  docker run --rm -v $(pwd):/home/go/project \
-             -w /home/go --user 1000:1000 \
-             --env GOPATH=/home/go --env GOCACHE=/home/go/gocache golang:1.15 \
-             go build -race -ldflags "-s -w" -o bin/sys-mon-cli cmd/sys-mon-cli/main.go
+	docker run --rm -v $$(pwd):/go/project \
+	           --env GOPATH=/go \
+		   --workdir /go/project \
+		   golang:1.15 \
+        go build -o ./bin/sys-mon-cli ./cmd/sys-mon-cli/
+	docker run --rm -v $$(pwd):/sys-mon golang:1.15 \
+	           chown $(UID):$(UID) /sys-mon/bin/sys-mon-cli
