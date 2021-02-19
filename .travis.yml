@@ -30,12 +30,7 @@ stages:
 
 jobs:
   include:
-    - stage: "Tests"
-      name: "go get"
-      install: echo "skip"
-      script: cd /tmp && go get "github.com/${TRAVIS_REPO_SLUG}/${BRANCH}@${BRANCH}"
-
-    - stage: "Tests"
+    - stage: "Test"
       name: "Linters"
       install: go install github.com/golangci/golangci-lint/cmd/golangci-lint
       script: golangci-lint run ./...
