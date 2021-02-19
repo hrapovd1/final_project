@@ -107,11 +107,42 @@ func (mst *monStateBuff) fillCPU(doneCh <-chan interface{}, cond *sync.Cond, cou
 	}
 }
 
+func getItv(preUptime *float64) (float64, error) {
+	// count measure interval according uptime
+	// This interval count method is got from
+	// https://github.com/sysstat/sysstat/blob/master/iostat.c
+	uptimeLast := float64(0)
+	uptime, err := ioutil.ReadFile("/proc/uptime")
+	if err != nil {
+		return 0, err
+	}
+	valuesStr := strings.Split(strings.Trim(string(uptime), "\n"), " ")
+	valuesFloat1, err := strconv.ParseFloat(valuesStr[0], 64)
+	if err != nil {
+		return 0, err
+	}
+	valuesFloat2, err := strconv.ParseFloat(valuesStr[1], 64)
+	if err != nil {
+		return 0, err
+	}
+	uptimeLast = valuesFloat1 + valuesFloat2/100 // this is coefficient from iostat
+	if *preUptime == 0 {
+		*preUptime = uptimeLast - 1
+	}
+	itv := uptimeLast - uptimePrev
+	*preUptime = uptimeLast
+
+	return itv, nil
+}
+
 // tps (transfers per second); KB/s (kilobytes (read+write) per second).
 func getDiskLoad() (map[string][]float32, error) {
 	diskLoad := make(map[string][]float32)
 	diskStatLast := make(map[string][]uint64)
-	uptimeLast := float64(0)
+	itv, err := getItv(&uptimePrev) // Interval between measures
+	if err != nil {
+		return diskLoad, err
+	}
 
 	// find block devices
 	files, err := ioutil.ReadDir("/sys/block")
@@ -124,29 +155,6 @@ func getDiskLoad() (map[string][]float32, error) {
 			diskStatLast[item.Name()] = make([]uint64, 16)
 		}
 	}
-	// count measure interval according uptime
-	// This interval count method is got from
-	// https://github.com/sysstat/sysstat/blob/master/iostat.c
-	uptime, err := ioutil.ReadFile("/proc/uptime")
-	if err != nil {
-		return diskLoad, err
-	}
-	valuesStr := strings.Split(strings.Trim(string(uptime), "\n"), " ")
-	valuesFloat1, err := strconv.ParseFloat(valuesStr[0], 64)
-	if err != nil {
-		return diskLoad, err
-	}
-	valuesFloat2, err := strconv.ParseFloat(valuesStr[1], 64)
-	if err != nil {
-		return diskLoad, err
-	}
-	uptimeLast = valuesFloat1 + valuesFloat2/100 // this is coefficient from iostat
-	if uptimePrev == 0 {
-		uptimePrev = uptimeLast - 1
-	}
-	itv := uptimeLast - uptimePrev
-	uptimePrev = uptimeLast
-
 	/*
 		get statistics for block devices
 		This statistics count method is got from
@@ -305,9 +313,9 @@ func (mst *monStateBuff) fillFsUsage(doneCh <-chan interface{}, cond *sync.Cond,
    }
 */
 // dummy function.
-func getNetListner() (listner, error) {
+func getNetListner() (*listner, error) {
 	netListner := new(listner)
-	return *netListner, nil
+	return netListner, nil
 }
 
 func (mst *monStateBuff) fillNetListner(doneCh <-chan interface{}, cond *sync.Cond, count *int, logger *log.Logger) {

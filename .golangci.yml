@@ -19,3 +19,9 @@ linters:
     - testpackage
     - wsl
     - wrapcheck
+linters-settings:
+  funlen:
+    lines: 75
+    statements: 45
+  gocognit:
+    min-complexity: 35

@@ -40,14 +40,14 @@ type monState struct {
 	cpu        [3]float32
 	diskLoad   map[string][]float32
 	fsUsage    map[string][2]float64
-	netListner listner
+	netListner *listner
 	netSocks   uint
 }
 
 // Monitoring internal buffer.
 type monStateBuff struct {
 	mu   sync.RWMutex
-	buff []monState
+	buff []*monState
 }
 
 // System monitoring process.
@@ -63,7 +63,17 @@ func NewSysmon(dataBuff, answPeriod, port uint) Sysmon {
 		answPeriod: answPeriod,
 	}
 	smBuff := new(monStateBuff)
-	smBuff.buff = make([]monState, dataBuff) // sys-mon scrapes buffer
+	smBuff.buff = make([]*monState, dataBuff) // sys-mon scrapes buffer
+	for i := range smBuff.buff {
+		buff := new(monState)
+		buff.cpu = [...]float32{0, 0, 0}
+		buff.loadAver = float32(0)
+		buff.netSocks = uint(0)
+		buff.netListner = new(listner)
+		buff.diskLoad = map[string][]float32{"": {0, 0}}
+		buff.fsUsage = map[string][2]float64{"": {0, 0}}
+		smBuff.buff[i] = buff
+	}
 
 	return smBuff
 }
@@ -118,8 +128,9 @@ func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer
 	}
 
 	for {
-		msg := make([]smgrpc.All, len(sS.monBuff.buff))
-		for i := range msg {
+		msg := make([]*smgrpc.All, len(sS.monBuff.buff))
+		for i := range sS.monBuff.buff {
+			msg[i] = new(smgrpc.All)
 			// loop for fill All message from monitoring buffer.
 			scrape := sS.monBuff.buff[i]
 			// aggregate disks data
@@ -172,7 +183,7 @@ func (sS *statServer) GetAll(query *smgrpc.Request, out smgrpc.Stat_GetAllServer
 		}
 		<-answer.C
 		for _, message := range msg {
-			err := out.Send(&message)
+			err := out.Send(message)
 			if err != nil {
 				answer.Stop()
 				return err
